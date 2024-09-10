@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: rbc
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: library
+      username: library
+      password: library
