@@ -3,8 +3,5 @@ spring:
     name: rbc
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: library
-      username: library
-      password: library
+      uri: mongodb://root_rbc:password@localhost:27017/library?authSource=admin
+
