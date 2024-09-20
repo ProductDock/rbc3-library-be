@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: rbc
+  data:
+    mongodb:
+      uri: mongodb://root_rbc:password@localhost:27017/library?authSource=admin
+
