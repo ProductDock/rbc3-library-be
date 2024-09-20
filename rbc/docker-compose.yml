@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb-data:/var/lib/mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root_rbc
+      MONGO_INITDB_ROOT_PASSWORD: password
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root_rbc
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH_USERNAME: me_rbc # username for mongo express ui
+      ME_CONFIG_BASICAUTH_PASSWORD: me_password # password for mongo express ui
+      ME_CONFIG_MONGODB_URL: mongodb://root_rbc:password@mongodb:27017/?authSource=admin
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
