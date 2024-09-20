@@ -6,5 +6,5 @@ spring:
       host: localhost
       port: 27017
       database: library
-      username: library
-      password: library
+      username: root_rbc
+      password: password
