@@ -13,6 +13,16 @@ This application is designed to help users browse, reserve, and rent books from 
 - **Search functionality**: Quickly find books by title, author, or genre.
 - **User roles**: Distinct access levels for admin and regular users.
 
+## Technologies Used
+- **Java 21** with **Spring Boot**
+- **MongoDB** for database management
+- **Docker** for containerization
+## Getting Started
+### Prerequisites
+- Java 21
+- Maven
+- Docker
+
 ### Running the Application
 
 To run the application locally, use the following methods:
