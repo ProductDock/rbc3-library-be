@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "suggestions")
+@Document("suggestions")
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,9 +19,9 @@ public class Suggestion {
 
     @Id
     private String id;
-    private Book book;
+    private SuggestedBook suggestedBook;
     private SuggestionStatus suggestionStatus;
     private String orderFrom;
     private Integer amount;
-    private LocalDateTime creatingTime;
+    private LocalDateTime creationDate;
 }

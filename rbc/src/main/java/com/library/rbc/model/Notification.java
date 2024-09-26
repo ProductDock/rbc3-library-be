@@ -21,7 +21,7 @@ public class Notification {
     private Boolean isRead;
     private String subject;
     private String content;
-    private LocalDateTime timeReceived;
+    private LocalDateTime creationDateTime;
     private String bookId;
     private String userId;
 }

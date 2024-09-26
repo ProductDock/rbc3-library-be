@@ -22,7 +22,7 @@ public class Rental {
     private String id;
     private RentalType rentalType;
     private String userId;
-    private Book book;
+    private BookRentalDetails bookRentalDetails;
     private RentalStatus rentalStatus;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

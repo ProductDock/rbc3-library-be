@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "books")
+@Document("books")
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,11 +22,11 @@ public class Book {
     private String isbn;
     private String title;
     private String description;
-    private Author author;
+    private List<Author> authors;
     private String imageUrl;
     private Integer totalNumberOfCopies;
-    private List<String> favourites; //collection of user ids
-    private List<String> watingList; //collection of user ids
-    private List<String> suggestions; //collection of user ids
-    private BookCategory bookCategory;
+    private List<String> usersWhoFavourited;
+    private List<String> usersOnWaitingList;
+    private List<String> usersWhoSuggested;
+    private List<BookCategory> bookCategories;
 }

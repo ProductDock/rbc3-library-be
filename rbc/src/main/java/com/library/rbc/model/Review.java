@@ -9,8 +9,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Document(collection = "reviews")
+@Document("reviews")
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,10 +20,10 @@ public class Review {
 
     @Id
     private String id;
-    private Double rating;
+    private Integer rating;
     private String content;
-    private Seniority seniority;
+    private List<Seniority> seniorities;
     private LocalDateTime dateTime;
     private String bookId;
-    private User user;
+    private UserDetails userDetails;
 }
