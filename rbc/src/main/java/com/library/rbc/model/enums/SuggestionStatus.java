@@ -4,5 +4,7 @@ public enum SuggestionStatus {
     ORDERED,
     PENDING,
     IN_LIBRARY,
-    CANCELED
+    CANCELED,
+    APPROVED,
+    DENIED
 }

@@ -12,7 +12,6 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 public class Author {
 
-    @Id
     private String id;
     private String fullName;
 }
