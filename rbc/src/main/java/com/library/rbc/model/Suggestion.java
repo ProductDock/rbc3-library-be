@@ -24,4 +24,5 @@ public class Suggestion {
     private String orderFrom;
     private Integer amount;
     private LocalDateTime creationDate;
+    private String description;
 }

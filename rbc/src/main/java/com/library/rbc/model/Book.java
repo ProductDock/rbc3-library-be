@@ -1,6 +1,7 @@
 package com.library.rbc.model;
 
 import com.library.rbc.model.enums.BookCategory;
+import com.library.rbc.model.enums.BookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Book {
     private List<Author> authors;
     private String imageUrl;
     private Integer totalNumberOfCopies;
+    private BookType bookType;
     private List<String> usersWhoFavourited;
     private List<String> usersOnWaitingList;
     private List<String> usersWhoSuggested;
