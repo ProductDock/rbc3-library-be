@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "notifications")
+@Document("notifications")
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class Notification {
     private Boolean isRead;
     private String subject;
     private String content;
-    private LocalDateTime creationDateTime;
+    private LocalDateTime creationDate;
     private String bookId;
     private String userId;
 }

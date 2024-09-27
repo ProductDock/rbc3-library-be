@@ -27,8 +27,11 @@ public class Book {
     private String imageUrl;
     private Integer totalNumberOfCopies;
     private BookType bookType;
+    private Integer numberOfAvailableCopies;
     private List<String> usersWhoFavourited;
     private List<String> usersOnWaitingList;
+    private List<String> usersWhoRented;
+    private List<String> usersWhoReserved;
     private List<String> usersWhoSuggested;
     private List<BookCategory> bookCategories;
 }

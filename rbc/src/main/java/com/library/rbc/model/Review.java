@@ -25,5 +25,5 @@ public class Review {
     private List<Seniority> seniorities;
     private LocalDateTime dateTime;
     private String bookId;
-    private UserDetails userDetails;
+    private String userId;
 }

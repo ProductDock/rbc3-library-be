@@ -20,6 +20,7 @@ public class Suggestion {
     @Id
     private String id;
     private SuggestedBook suggestedBook;
+    private String suggestedBy;
     private SuggestionStatus suggestionStatus;
     private String orderFrom;
     private Integer amount;
