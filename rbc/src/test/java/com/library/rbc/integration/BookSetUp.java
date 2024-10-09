@@ -1,4 +1,4 @@
-package com.library.rbc.controller.bookController;
+package com.library.rbc.integration;
 
 import com.library.rbc.model.Author;
 import com.library.rbc.model.Book;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public class BookControllerSetUp {
+public class BookSetUp {
 
     static final Author BOOK_AUTHOR = Author.builder().id("1").fullName("J. K. Rowling").build();
 
@@ -69,10 +69,5 @@ public class BookControllerSetUp {
     static List<BookDto> createBookDtos() {
         BookDto bookDto = createBookDto();
         return List.of(bookDto);
-    }
-
-    static ResponseEntity<List<BookDto>> createResponseEntity() {
-        List<BookDto> bookDtos = createBookDtos();
-        return new ResponseEntity<>(bookDtos, HttpStatus.OK);
     }
 }
