@@ -1,6 +1,5 @@
 package com.library.rbc.controller;
 
-import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.service.BookService;
 import lombok.RequiredArgsConstructor;

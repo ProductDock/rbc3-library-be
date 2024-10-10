@@ -1,6 +1,5 @@
-package com.library.rbc.integration;
+package com.library.rbc.integration.bookController;
 
-import com.library.rbc.RbcApplication;
 import com.library.rbc.model.Book;
 import com.library.rbc.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT, classes = RbcApplication.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 public class IntegrationTest {
 
     @Autowired
@@ -27,8 +27,11 @@ public class IntegrationTest {
 
     @Test
     public void shouldGetAllBooks() {
-        Book book = BookSetUp.createBook();
-        bookRepository.save(book);
+        Book book1 = BookSetUp.createBook1();
+        Book book2 = BookSetUp.createBook2();
+
+        bookRepository.save(book1);
+        bookRepository.save(book2);
 
         webClient.get()
                 .uri("/books")
@@ -36,6 +39,7 @@ public class IntegrationTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$[0].id").isEqualTo(BookSetUp.BOOK_ID)
+                .jsonPath("$[1].id").isEqualTo(BookSetUp.BOOK_2_ID)
                 .jsonPath("$[0].title").isEqualTo(BookSetUp.BOOK_TITLE)
                 .jsonPath("$[0].authors[0].id").isEqualTo(BookSetUp.BOOK_AUTHOR.getId())
                 .jsonPath("$[0].authors[0].fullName").isEqualTo(BookSetUp.BOOK_AUTHOR.getFullName())

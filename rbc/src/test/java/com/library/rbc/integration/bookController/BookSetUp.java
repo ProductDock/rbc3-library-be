@@ -1,12 +1,9 @@
-package com.library.rbc.integration;
+package com.library.rbc.integration.bookController;
 
 import com.library.rbc.model.Author;
 import com.library.rbc.model.Book;
-import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.enums.BookCategory;
 import com.library.rbc.model.enums.BookType;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -31,7 +28,9 @@ public class BookSetUp {
     static final BookType BOOK_TYPE = BookType.BOOK;
     static final List<String> USERS_WHO_SUGGESTED_BOOK = List.of();
 
-    static Book createBook() {
+    static final String BOOK_2_ID = "2";
+
+    static Book createBook1() {
         return Book.builder()
                 .id(BOOK_ID)
                 .isbn(BOOK_ISBN)
@@ -51,23 +50,23 @@ public class BookSetUp {
                 .build();
     }
 
-    static BookDto createBookDto() {
-        return BookDto.builder()
-                .id(BOOK_ID)
+    static Book createBook2() {
+        return Book.builder()
+                .id(BOOK_2_ID)
+                .isbn(BOOK_ISBN)
                 .title(BOOK_TITLE)
+                .description(BOOK_DESCRIPTION)
                 .authors(BOOK_AUTHORS)
                 .imageUrl(BOOK_IMAGE_URL)
+                .totalNumberOfCopies(BOOK_TOTAL_NUMBER_OF_COPIES)
+                .bookType(BOOK_TYPE)
                 .numberOfAvailableCopies(BOOK_NUMBER_OF_AVAILABLE_COPIES)
                 .usersWhoFavourited(USERS_WHO_FAVORITED_BOOK)
                 .usersOnWaitingList(USERS_ON_WAITING_LIST)
                 .usersWhoRented(USERS_WHO_RENTED)
                 .usersWhoReserved(USERS_WHO_RESERVED)
+                .usersWhoSuggested(USERS_WHO_SUGGESTED_BOOK)
                 .bookCategories(BOOK_CATEGORIES)
                 .build();
-    }
-
-    static List<BookDto> createBookDtos() {
-        BookDto bookDto = createBookDto();
-        return List.of(bookDto);
     }
 }
