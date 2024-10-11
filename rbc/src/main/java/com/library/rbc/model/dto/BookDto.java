@@ -1,6 +1,5 @@
 package com.library.rbc.model.dto;
 
-import com.library.rbc.model.enums.BookCategory;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +17,5 @@ public class BookDto {
   private List<String> usersOnWaitingList;
   private List<String> usersWhoRented;
   private List<String> usersWhoReserved;
-  private List<BookCategory> bookCategories;
+  private List<BookCategoryDto> bookCategories;
 }

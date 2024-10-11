@@ -3,6 +3,7 @@ package com.library.rbc.service.bookservice;
 import com.library.rbc.model.Author;
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.AuthorDto;
+import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.enums.BookCategory;
 import com.library.rbc.model.enums.BookType;
@@ -26,6 +27,7 @@ public class BookServiceSetUp {
   static final List<String> USERS_WHO_RENTED = List.of();
   static final List<String> USERS_WHO_RESERVED = List.of();
   static final List<BookCategory> BOOK_CATEGORIES = List.of();
+  static final List<BookCategoryDto> BOOK_CATEGORY_DTOS = List.of();
 
   static final String BOOK_ISBN = "111";
   static final String BOOK_DESCRIPTION = "description";
@@ -64,7 +66,7 @@ public class BookServiceSetUp {
         .usersOnWaitingList(USERS_ON_WAITING_LIST)
         .usersWhoRented(USERS_WHO_RENTED)
         .usersWhoReserved(USERS_WHO_RESERVED)
-        .bookCategories(BOOK_CATEGORIES)
+        .bookCategories(BOOK_CATEGORY_DTOS)
         .build();
   }
 

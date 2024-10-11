@@ -1,8 +1,8 @@
 package com.library.rbc.controller.bookcontroller;
 
 import com.library.rbc.model.dto.AuthorDto;
+import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
-import com.library.rbc.model.enums.BookCategory;
 import java.util.List;
 
 public class BookControllerSetUp {
@@ -19,7 +19,7 @@ public class BookControllerSetUp {
   static final List<String> USERS_ON_WAITING_LIST = List.of();
   static final List<String> USERS_WHO_RENTED = List.of();
   static final List<String> USERS_WHO_RESERVED = List.of();
-  static final List<BookCategory> BOOK_CATEGORIES = List.of();
+  static final List<BookCategoryDto> BOOK_CATEGORY_DTOS = List.of();
 
   static BookDto createBookDto() {
     return BookDto.builder()
@@ -32,7 +32,7 @@ public class BookControllerSetUp {
         .usersOnWaitingList(USERS_ON_WAITING_LIST)
         .usersWhoRented(USERS_WHO_RENTED)
         .usersWhoReserved(USERS_WHO_RESERVED)
-        .bookCategories(BOOK_CATEGORIES)
+        .bookCategories(BOOK_CATEGORY_DTOS)
         .build();
   }
 
