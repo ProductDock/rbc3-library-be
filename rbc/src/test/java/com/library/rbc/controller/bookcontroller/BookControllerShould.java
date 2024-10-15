@@ -7,12 +7,14 @@ import static org.mockito.Mockito.when;
 import com.library.rbc.controller.BookController;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.service.BookService;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 public class BookControllerShould {
@@ -25,12 +27,13 @@ public class BookControllerShould {
 
   @Test
   void getAllBooks() {
-    List<BookDto> bookDtos = createBookDtos();
-    when(bookService.getAllBooks()).thenReturn(bookDtos);
+    Page<BookDto> bookDtos = createBookDtos();
+    Pageable pageable = PageRequest.of(0, 10);
 
-    List<BookDto> result = bookController.getAllBooks();
+    when(bookService.getAllBooks(pageable)).thenReturn(bookDtos);
+    Page<BookDto> result = bookController.getAllBooks(0, 10);
 
-    List<BookDto> expected = createBookDtos();
+    Page<BookDto> expected = createBookDtos();
     assertEquals(expected, result);
   }
 }

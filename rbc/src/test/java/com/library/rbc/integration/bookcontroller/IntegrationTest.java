@@ -37,15 +37,15 @@ public class IntegrationTest {
         .exchange()
         .expectStatus().isOk()
         .expectBody()
-        .jsonPath("$[0].id").isEqualTo(BookSetUp.BOOK_ID)
-        .jsonPath("$[1].id").isEqualTo(BookSetUp.BOOK_2_ID)
-        .jsonPath("$[0].title").isEqualTo(BookSetUp.BOOK_TITLE)
-        .jsonPath("$[0].authors[0].id").isEqualTo(BookSetUp.BOOK_AUTHOR.getId())
-        .jsonPath("$[0].authors[0].fullName").isEqualTo(BookSetUp.BOOK_AUTHOR.getFullName())
-        .jsonPath("$[0].imageUrl").isEqualTo(BookSetUp.BOOK_IMAGE_URL)
-        .jsonPath("$[0].numberOfAvailableCopies")
+        .jsonPath("$.content[0].id").isEqualTo(BookSetUp.BOOK_ID)
+        .jsonPath("$.content[1].id").isEqualTo(BookSetUp.BOOK_2_ID)
+        .jsonPath("$.content[0].title").isEqualTo(BookSetUp.BOOK_TITLE)
+        .jsonPath("$.content[0].authors[0].id").isEqualTo(BookSetUp.BOOK_AUTHOR.getId())
+        .jsonPath("$.content[0].authors[0].fullName").isEqualTo(BookSetUp.BOOK_AUTHOR.getFullName())
+        .jsonPath("$.content[0].imageUrl").isEqualTo(BookSetUp.BOOK_IMAGE_URL)
+        .jsonPath("$.content[0].numberOfAvailableCopies")
         .isEqualTo(BookSetUp.BOOK_NUMBER_OF_AVAILABLE_COPIES)
-        .jsonPath("$[0].usersWhoFavourited").isEmpty()
-        .jsonPath("$.size()").isEqualTo(2);
+        .jsonPath("$.content[0].usersWhoFavourited").isEmpty()
+        .jsonPath("$.content.size()").isEqualTo(2);
   }
 }

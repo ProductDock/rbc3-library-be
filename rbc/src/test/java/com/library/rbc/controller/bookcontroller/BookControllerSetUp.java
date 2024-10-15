@@ -4,6 +4,10 @@ import com.library.rbc.model.dto.AuthorDto;
 import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public class BookControllerSetUp {
 
@@ -36,8 +40,11 @@ public class BookControllerSetUp {
         .build();
   }
 
-  static List<BookDto> createBookDtos() {
+  static Page<BookDto> createBookDtos() {
     BookDto bookDto = createBookDto();
-    return List.of(bookDto);
+    List<BookDto> bookDtos = List.of(bookDto);
+    Pageable pageable = PageRequest.of(0, 10);
+
+    return new PageImpl<>(bookDtos, pageable, bookDtos.size());
   }
 }

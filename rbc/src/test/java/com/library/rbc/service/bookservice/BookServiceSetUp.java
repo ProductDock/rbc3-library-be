@@ -8,6 +8,10 @@ import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.enums.BookCategory;
 import com.library.rbc.model.enums.BookType;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public class BookServiceSetUp {
 
@@ -75,8 +79,18 @@ public class BookServiceSetUp {
     return List.of(book);
   }
 
-  static List<BookDto> createBookDtos() {
+  static Page<BookDto> createBookDtosPage() {
     BookDto bookDto = createBookDto();
-    return List.of(bookDto);
+    List<BookDto> bookDtos = List.of(bookDto);
+    Pageable pageable = PageRequest.of(0, 10);
+
+    return new PageImpl<>(bookDtos, pageable, bookDtos.size());
+  }
+
+  static Page<Book> createBooksPage() {
+    List<Book> books = createBooks();
+    Pageable pageable = PageRequest.of(0, 10);
+
+    return new PageImpl<>(books, pageable, books.size());
   }
 }
