@@ -1,5 +1,7 @@
 package com.library.rbc.controller.bookcontroller;
 
+import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.PAGE_NUMBER;
+import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.PAGE_SIZE;
 import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.createBookDtos;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -28,10 +30,10 @@ public class BookControllerShould {
   @Test
   void getAllBooks() {
     Page<BookDto> bookDtos = createBookDtos();
-    Pageable pageable = PageRequest.of(0, 10);
+    Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     when(bookService.getAllBooks(pageable)).thenReturn(bookDtos);
-    Page<BookDto> result = bookController.getAllBooks(0, 10);
+    Page<BookDto> result = bookController.getAllBooks(pageable);
 
     Page<BookDto> expected = createBookDtos();
     assertEquals(expected, result);

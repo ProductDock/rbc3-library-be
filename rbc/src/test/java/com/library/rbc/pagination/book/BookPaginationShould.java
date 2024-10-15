@@ -33,7 +33,7 @@ public class BookPaginationShould {
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     when(bookService.getAllBooks(pageable)).thenReturn(bookDtos);
-    Page<?> result = bookController.getAllBooks(PAGE_NUMBER, PAGE_SIZE);
+    Page<?> result = bookController.getAllBooks(pageable);
 
     Page<?> expected = createBookDtos();
     assertEquals(expected, result);

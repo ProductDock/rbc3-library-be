@@ -39,6 +39,9 @@ public class BookServiceSetUp {
   static final BookType BOOK_TYPE = BookType.BOOK;
   static final List<String> USERS_WHO_SUGGESTED_BOOK = List.of();
 
+  static final int PAGE_NUMBER = 0;
+  static final int PAGE_SIZE = 10;
+
   static Book createBook() {
     return Book.builder()
         .id(BOOK_ID)
@@ -82,14 +85,14 @@ public class BookServiceSetUp {
   static Page<BookDto> createBookDtosPage() {
     BookDto bookDto = createBookDto();
     List<BookDto> bookDtos = List.of(bookDto);
-    Pageable pageable = PageRequest.of(0, 10);
+    Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     return new PageImpl<>(bookDtos, pageable, bookDtos.size());
   }
 
   static Page<Book> createBooksPage() {
     List<Book> books = createBooks();
-    Pageable pageable = PageRequest.of(0, 10);
+    Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     return new PageImpl<>(books, pageable, books.size());
   }

@@ -25,6 +25,9 @@ public class BookControllerSetUp {
   static final List<String> USERS_WHO_RESERVED = List.of();
   static final List<BookCategoryDto> BOOK_CATEGORY_DTOS = List.of();
 
+  static final int PAGE_NUMBER = 0;
+  static final int PAGE_SIZE = 10;
+
   static BookDto createBookDto() {
     return BookDto.builder()
         .id(BOOK_ID)
@@ -43,7 +46,7 @@ public class BookControllerSetUp {
   static Page<BookDto> createBookDtos() {
     BookDto bookDto = createBookDto();
     List<BookDto> bookDtos = List.of(bookDto);
-    Pageable pageable = PageRequest.of(0, 10);
+    Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     return new PageImpl<>(bookDtos, pageable, bookDtos.size());
   }

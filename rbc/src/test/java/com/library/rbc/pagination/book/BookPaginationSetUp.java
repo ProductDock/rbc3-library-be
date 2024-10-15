@@ -64,7 +64,7 @@ public class BookPaginationSetUp {
     BookDto bookDto3 = createBookDto3();
 
     List<BookDto> bookDtos = List.of(bookDto1, bookDto2, bookDto3);
-    Pageable pageable = PageRequest.of(0, 2); // Page 0, size 10
+    Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     return new PageImpl<>(bookDtos, pageable, bookDtos.size());
   }

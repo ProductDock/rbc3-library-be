@@ -1,5 +1,7 @@
 package com.library.rbc.service.bookservice;
 
+import static com.library.rbc.service.bookservice.BookServiceSetUp.PAGE_NUMBER;
+import static com.library.rbc.service.bookservice.BookServiceSetUp.PAGE_SIZE;
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBook;
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBookDto;
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBookDtosPage;
@@ -37,7 +39,7 @@ public class BookServiceShould {
   void getAllBooks() {
     Book book = createBook();
     BookDto bookDto = createBookDto();
-    Pageable pageable = PageRequest.of(0, 10);
+    Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     when(bookRepository.findAll(pageable)).thenReturn(createBooksPage());
     when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
