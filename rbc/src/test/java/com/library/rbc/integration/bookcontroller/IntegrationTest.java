@@ -48,4 +48,34 @@ public class IntegrationTest {
         .jsonPath("$.content[0].usersWhoFavourited").isEmpty()
         .jsonPath("$.content.size()").isEqualTo(2);
   }
+
+  @Test
+  public void shouldGetBookById() {
+    Book book = BookSetUp.createBook1();
+    bookRepository.save(book);
+    webClient.get()
+        .uri("/books/" + BookSetUp.BOOK_ID)
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .jsonPath("$.id").isEqualTo(BookSetUp.BOOK_ID)
+        .jsonPath("$.title").isEqualTo(BookSetUp.BOOK_TITLE)
+        .jsonPath("$.authors[0].id").isEqualTo(BookSetUp.BOOK_AUTHOR.getId())
+        .jsonPath("$.authors[0].fullName").isEqualTo(BookSetUp.BOOK_AUTHOR.getFullName())
+        .jsonPath("$.imageUrl").isEqualTo(BookSetUp.BOOK_IMAGE_URL)
+        .jsonPath("$.numberOfAvailableCopies")
+        .isEqualTo(BookSetUp.BOOK_NUMBER_OF_AVAILABLE_COPIES)
+        .jsonPath("$.usersWhoFavourited").isEmpty();
+  }
+
+  @Test
+  public void shouldCatchBookNotFoundException() {
+    webClient.get()
+        .uri("/books/" + BookSetUp.BOOK_ID)
+        .exchange()
+        .expectStatus().isNotFound()
+        .expectBody()
+        .jsonPath("$.statusCode").isEqualTo(404)
+        .jsonPath("$.message").isEqualTo("There is no book with id: " + BookSetUp.BOOK_ID);
+  }
 }
