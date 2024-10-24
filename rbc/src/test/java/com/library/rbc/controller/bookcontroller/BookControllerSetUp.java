@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 public class BookControllerSetUp {
 
@@ -49,5 +51,14 @@ public class BookControllerSetUp {
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     return new PageImpl<>(bookDtos, pageable, bookDtos.size());
+  }
+
+  static ResponseEntity<BookDto> createResponseEntity() {
+    BookDto bookDto = createBookDto();
+    return new ResponseEntity<>(bookDto, HttpStatus.OK);
+  }
+
+  static ResponseEntity<BookDto> createNotFoundResponseEntity() {
+    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 }
