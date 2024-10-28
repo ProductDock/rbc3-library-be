@@ -67,6 +67,22 @@ public class ReviewIntegrationTest {
         .jsonPath("$.content[0].userId").isEqualTo(USER_ID)
         .jsonPath("$.content[1].userId").isEqualTo(USER_ID_2)
         .jsonPath("$.content.size()").isEqualTo(2);
+  }
 
+  @Test
+  public void shouldCatchBookNotFoundException() {
+    Review review1 = ReviewSetUp.createReview1();
+    Review review2 = ReviewSetUp.createReview2();
+
+    reviewRepository.save(review1);
+    reviewRepository.save(review2);
+
+    webClient.get()
+        .uri("/books/" + BOOK_ID + "/reviews")
+        .exchange()
+        .expectStatus().isNotFound()
+        .expectBody()
+        .jsonPath("$.statusCode").isEqualTo(404)
+        .jsonPath("$.message").isEqualTo("There is no book with id: " + BOOK_ID);
   }
 }
