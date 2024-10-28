@@ -78,19 +78,6 @@ public class BookSetUp {
         .build();
   }
 
-  /*
-  *   private String id;
-  private String title;
-  private List<AuthorDto> authors;
-  private String imageUrl;
-  private Integer numberOfAvailableCopies;
-  private List<String> usersWhoFavourited;
-  private List<String> usersOnWaitingList;
-  private List<String> usersWhoRented;
-  private List<String> usersWhoReserved;
-  private List<BookCategoryDto> bookCategories;
-  * */
-
   static BookDto createBookDto() {
     return BookDto.builder()
         .title(BOOK_TITLE)

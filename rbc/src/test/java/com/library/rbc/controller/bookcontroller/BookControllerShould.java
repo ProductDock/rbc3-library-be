@@ -1,6 +1,9 @@
 package com.library.rbc.controller.bookcontroller;
 
-import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.*;
+import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.PAGE_NUMBER;
+import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.PAGE_SIZE;
+import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.createBookDtos;
+import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.createBookDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 

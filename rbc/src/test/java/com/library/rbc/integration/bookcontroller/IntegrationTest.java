@@ -4,9 +4,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookDto;
-import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.repository.BookRepository;
-import com.library.rbc.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +19,6 @@ public class IntegrationTest {
 
     @Autowired
     private BookRepository bookRepository;
-
-    @Autowired
-    private BookService bookService;
-
 
     @BeforeEach
     public void setUp() {
