@@ -52,13 +52,12 @@ public class BookServiceShould {
     @Test
     void addNewBook() {
         Book book = createBook();
-        BookDto bookDto = createBookDto();
+        BookDto expected = createBookDto();
 
-        when(bookMapper.bookDtoToBook(bookDto)).thenReturn(book);
+        when(bookMapper.bookDtoToBook(expected)).thenReturn(book);
         when(bookRepository.save(book)).thenReturn(book);
+        BookDto actual = bookService.addNewBook(expected);
 
-        bookService.addNewBook(bookDto);
-
-        assertEquals(bookDto, bookDto);
+        assertEquals(expected, actual);
     }
 }

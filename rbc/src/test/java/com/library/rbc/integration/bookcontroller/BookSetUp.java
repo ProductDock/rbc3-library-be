@@ -2,6 +2,9 @@ package com.library.rbc.integration.bookcontroller;
 
 import com.library.rbc.model.Author;
 import com.library.rbc.model.Book;
+import com.library.rbc.model.dto.AuthorDto;
+import com.library.rbc.model.dto.BookCategoryDto;
+import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.enums.BookCategory;
 import com.library.rbc.model.enums.BookType;
 import java.util.List;
@@ -9,10 +12,14 @@ import java.util.List;
 public class BookSetUp {
 
   static final Author BOOK_AUTHOR = Author.builder().id("1").fullName("J. K. Rowling").build();
+  static final AuthorDto BOOK_AUTHOR_DTO = AuthorDto.builder().id("1").fullName("J. K. Rowling").build();
 
   static final String BOOK_ID = "1";
   static final String BOOK_TITLE = "Harry Potter";
   static final List<Author> BOOK_AUTHORS = List.of(BOOK_AUTHOR);
+
+  static final List<AuthorDto> BOOK_AUTHORS_DTO = List.of(BOOK_AUTHOR_DTO);
+
   static final String BOOK_IMAGE_URL = "image_url";
   static final int BOOK_NUMBER_OF_AVAILABLE_COPIES = 3;
   static final List<String> USERS_WHO_FAVORITED_BOOK = List.of();
@@ -20,6 +27,8 @@ public class BookSetUp {
   static final List<String> USERS_WHO_RENTED = List.of();
   static final List<String> USERS_WHO_RESERVED = List.of();
   static final List<BookCategory> BOOK_CATEGORIES = List.of();
+
+  static final List<BookCategoryDto> BOOK_CATEGORIES_DTO = List.of();
 
   static final String BOOK_ISBN = "111";
   static final String BOOK_DESCRIPTION = "description";
@@ -66,6 +75,33 @@ public class BookSetUp {
         .usersWhoReserved(USERS_WHO_RESERVED)
         .usersWhoSuggested(USERS_WHO_SUGGESTED_BOOK)
         .bookCategories(BOOK_CATEGORIES)
+        .build();
+  }
+
+  /*
+  *   private String id;
+  private String title;
+  private List<AuthorDto> authors;
+  private String imageUrl;
+  private Integer numberOfAvailableCopies;
+  private List<String> usersWhoFavourited;
+  private List<String> usersOnWaitingList;
+  private List<String> usersWhoRented;
+  private List<String> usersWhoReserved;
+  private List<BookCategoryDto> bookCategories;
+  * */
+
+  static BookDto createBookDto() {
+    return BookDto.builder()
+        .title(BOOK_TITLE)
+        .authors(BOOK_AUTHORS_DTO)
+        .imageUrl(BOOK_IMAGE_URL)
+        .numberOfAvailableCopies(BOOK_NUMBER_OF_AVAILABLE_COPIES)
+        .usersWhoFavourited(USERS_WHO_FAVORITED_BOOK)
+        .usersOnWaitingList(USERS_ON_WAITING_LIST)
+        .usersWhoRented(USERS_WHO_RENTED)
+        .usersWhoReserved(USERS_WHO_RESERVED)
+        .bookCategories(BOOK_CATEGORIES_DTO)
         .build();
   }
 }
