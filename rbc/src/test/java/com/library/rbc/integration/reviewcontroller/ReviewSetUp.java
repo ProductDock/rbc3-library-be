@@ -12,9 +12,6 @@ import java.util.List;
 
 public class ReviewSetUp {
 
-//  static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
-//      "yyyy-MM-dd'T'HH:mm:ss.SSS");
-
   static final String REVIEW_ID = "1";
   static final Integer REVIEW_RATING = 5;
   static final String REVIEW_CONTENT = "Content";
@@ -44,8 +41,6 @@ public class ReviewSetUp {
 
   static final String REVIEW_ID_2 = "2";
   static final String USER_ID_2 = "2";
-
-//  static final String formattedDateTime = REVIEW_DATE_TIME.format(formatter);
 
   static Book createBook() {
     return Book.builder()

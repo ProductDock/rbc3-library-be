@@ -8,8 +8,14 @@ import static com.library.rbc.service.reviewservice.ReviewServiceSetUp.createRev
 import static com.library.rbc.service.reviewservice.ReviewServiceSetUp.createReviewDtosPage;
 import static com.library.rbc.service.reviewservice.ReviewServiceSetUp.createReviewsPage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.library.rbc.exceptionHandler.BookNotFoundException;
 import com.library.rbc.model.Review;
 import com.library.rbc.model.dto.ReviewDto;
 import com.library.rbc.model.dto.ReviewMapper;
@@ -55,9 +61,20 @@ public class ReviewServiceShould {
     assertEquals(expected, result);
   }
 
-//  @Test
-//  void catchExceptionIfBookDoesntExist() {
-//    when(bookRepository.existsById(BOOK_ID)).thenReturn(true);
-//
-//  }
+  @Test
+  void catchExceptionIfBookDoesntExist() {
+    Pageable pageable = PageRequest.of(
+        PAGE_NUMBER, PAGE_SIZE);
+
+    when(bookRepository.existsById(BOOK_ID)).thenReturn(false);
+
+    BookNotFoundException exception = assertThrows(BookNotFoundException.class, () -> {
+      reviewService.getReviewsByBookId(BOOK_ID, pageable);
+    });
+
+    String expectedMessage = "There is no book with id: " + BOOK_ID;
+    String actualMessage = exception.getMessage();
+    assertTrue(actualMessage.contains(expectedMessage));
+    verify(reviewMapper, never()).reviewToReviewDto(any());
+  }
 }
