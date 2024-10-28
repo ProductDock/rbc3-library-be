@@ -38,4 +38,13 @@ public class BookControllerShould {
     Page<BookDto> expected = createBookDtos();
     assertEquals(expected, result);
   }
+
+  @Test
+  void addNewBook() {
+    BookDto bookDto = createBookDtos().getContent().get(0);
+
+    bookController.addBook(bookDto);
+
+    assertEquals(bookDto, bookDto);
+  }
 }
