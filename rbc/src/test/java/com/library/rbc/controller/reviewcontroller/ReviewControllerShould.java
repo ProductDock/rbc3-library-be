@@ -47,13 +47,13 @@ public class ReviewControllerShould {
   void getResponseWhenNoBookIsFound() {
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
     when(reviewService.getReviewsByBookId(BOOK_ID, pageable)).thenThrow(
-        new BookNotFoundException("There is no book with id: " + BOOK_ID));
+        new BookNotFoundException("Book with ID " + BOOK_ID + " was not found."));
 
     BookNotFoundException exception = assertThrows(BookNotFoundException.class, () -> {
       reviewController.getReviewsByBookId(BOOK_ID, pageable);
     });
 
-    String expectedMessage = "There is no book with id: " + BOOK_ID;
+    String expectedMessage = "Book with ID " + BOOK_ID + " was not found.";
     String actualMessage = exception.getMessage();
     assertTrue(actualMessage.contains(expectedMessage));
   }

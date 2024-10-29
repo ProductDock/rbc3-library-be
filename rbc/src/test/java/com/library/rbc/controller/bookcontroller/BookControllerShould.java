@@ -57,13 +57,13 @@ public class BookControllerShould {
   @Test
   void getResponseWhenNoBookIsFound() {
     when(bookService.getBook(BOOK_ID)).thenThrow(
-        new BookNotFoundException("There is no book with id: " + BOOK_ID));
+        new BookNotFoundException("Book with ID " + BOOK_ID + " was not found."));
 
     BookNotFoundException exception = assertThrows(BookNotFoundException.class, () -> {
       bookController.getBook(BOOK_ID);
     });
 
-    String expectedMessage = "There is no book with id: " + BOOK_ID;
+    String expectedMessage = "Book with ID " + BOOK_ID + " was not found.";
     String actualMessage = exception.getMessage();
     assertTrue(actualMessage.contains(expectedMessage));
   }
