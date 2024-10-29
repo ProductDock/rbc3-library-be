@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-  
+
   private int statusCode;
   private String message;
 
@@ -17,3 +17,4 @@ public class ErrorResponse {
     this.message = message;
   }
 }
+
