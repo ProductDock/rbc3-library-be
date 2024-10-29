@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import com.library.rbc.controller.ReviewController;
-import com.library.rbc.exceptionHandler.BookNotFoundException;
+import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.model.dto.ReviewDto;
 import com.library.rbc.service.ReviewService;
 import org.junit.jupiter.api.Test;

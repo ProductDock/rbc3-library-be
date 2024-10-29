@@ -1,6 +1,6 @@
 package com.library.rbc.service;
 
-import com.library.rbc.exceptionHandler.BookNotFoundException;
+import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.model.dto.ReviewDto;
 import com.library.rbc.model.dto.ReviewMapper;
 import com.library.rbc.repository.BookRepository;
@@ -20,7 +20,7 @@ public class ReviewService {
 
   public Page<ReviewDto> getReviewsByBookId(String bookId, Pageable pageable) {
     if (!bookRepository.existsById(bookId)) {
-      throw new BookNotFoundException("There is no book with id: " + bookId);
+      throw new BookNotFoundException("Book with ID " + bookId + " was not found.");
     }
     return reviewRepository.findByBookId(bookId, pageable)
         .map(reviewMapper::reviewToReviewDto);

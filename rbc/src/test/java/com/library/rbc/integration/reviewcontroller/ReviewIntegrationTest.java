@@ -82,7 +82,6 @@ public class ReviewIntegrationTest {
         .exchange()
         .expectStatus().isNotFound()
         .expectBody()
-        .jsonPath("$.statusCode").isEqualTo(404)
-        .jsonPath("$.message").isEqualTo("There is no book with id: " + BOOK_ID);
+        .jsonPath("$.message").isEqualTo("Book with ID " + BOOK_ID + " was not found.");
   }
 }

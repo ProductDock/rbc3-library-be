@@ -15,7 +15,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.library.rbc.exceptionHandler.BookNotFoundException;
+import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.model.Review;
 import com.library.rbc.model.dto.ReviewDto;
 import com.library.rbc.model.dto.ReviewMapper;
@@ -72,7 +72,7 @@ public class ReviewServiceShould {
       reviewService.getReviewsByBookId(BOOK_ID, pageable);
     });
 
-    String expectedMessage = "There is no book with id: " + BOOK_ID;
+    String expectedMessage = "Book with ID " + BOOK_ID + " was not found.";
     String actualMessage = exception.getMessage();
     assertTrue(actualMessage.contains(expectedMessage));
     verify(reviewMapper, never()).reviewToReviewDto(any());

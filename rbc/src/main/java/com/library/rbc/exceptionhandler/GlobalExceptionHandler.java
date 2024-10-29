@@ -1,4 +1,4 @@
-package com.library.rbc.exceptionHandler;
+package com.library.rbc.exceptionhandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(value = BookNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public @ResponseBody ErrorResponse handleException(BookNotFoundException ex) {
-    return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    return new ErrorResponse(ex.getMessage());
   }
 }
 
