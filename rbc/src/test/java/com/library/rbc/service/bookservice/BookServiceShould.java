@@ -66,8 +66,7 @@ public class BookServiceShould {
     when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
     BookDto result = bookService.getBook(BOOK_ID);
 
-    BookDto expectedBookDto = createBookDto();
-    assertEquals(expectedBookDto, result);
+    assertEquals(bookDto, result);
   }
 
   @Test

@@ -51,15 +51,14 @@ public class BookControllerShould {
     when(bookService.getBook(BOOK_ID)).thenReturn(bookDto);
     BookDto result = bookController.getBook(BOOK_ID);
 
-    BookDto expected = createBookDto();
-    assertEquals(expected, result);
+    assertEquals(bookDto, result);
   }
 
   @Test
   void getResponseWhenNoBookIsFound() {
     when(bookService.getBook(BOOK_ID)).thenThrow(
         new BookNotFoundException("There is no book with id: " + BOOK_ID));
-    
+
     BookNotFoundException exception = assertThrows(BookNotFoundException.class, () -> {
       bookController.getBook(BOOK_ID);
     });
