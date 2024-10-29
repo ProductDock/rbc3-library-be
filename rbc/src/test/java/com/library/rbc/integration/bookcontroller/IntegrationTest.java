@@ -3,6 +3,7 @@ package com.library.rbc.integration.bookcontroller;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.library.rbc.model.Book;
+import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,5 +48,23 @@ public class IntegrationTest {
         .isEqualTo(BookSetUp.BOOK_NUMBER_OF_AVAILABLE_COPIES)
         .jsonPath("$.content[0].usersWhoFavourited").isEmpty()
         .jsonPath("$.content.size()").isEqualTo(2);
+  }
+
+  @Test
+  public void shouldAddNewBook() {
+    BookDto bookDto = BookSetUp.createBookDto();
+
+    webClient.post()
+        .uri("/books")
+        .bodyValue(bookDto)
+        .exchange()
+        .expectStatus().isCreated()
+        .expectBody()
+        .jsonPath("$.title").isEqualTo(BookSetUp.BOOK_TITLE)
+        .jsonPath("$.authors[0].id").isEqualTo(BookSetUp.BOOK_AUTHOR.getId())
+        .jsonPath("$.authors[0].fullName").isEqualTo(BookSetUp.BOOK_AUTHOR.getFullName())
+        .jsonPath("$.imageUrl").isEqualTo(BookSetUp.BOOK_IMAGE_URL)
+        .jsonPath("$.numberOfAvailableCopies").isEqualTo(BookSetUp.BOOK_NUMBER_OF_AVAILABLE_COPIES)
+        .jsonPath("$.usersWhoFavourited").isEmpty();
   }
 }

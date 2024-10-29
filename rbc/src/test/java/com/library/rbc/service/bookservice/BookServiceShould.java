@@ -48,4 +48,16 @@ public class BookServiceShould {
     Page<BookDto> expectedBookDtos = createBookDtosPage();
     assertEquals(expectedBookDtos, result);
   }
+
+    @Test
+    void addNewBook() {
+        Book book = createBook();
+        BookDto expected = createBookDto();
+
+        when(bookMapper.bookDtoToBook(expected)).thenReturn(book);
+        when(bookRepository.save(book)).thenReturn(book);
+        BookDto actual = bookService.addNewBook(expected);
+
+        assertEquals(expected, actual);
+    }
 }

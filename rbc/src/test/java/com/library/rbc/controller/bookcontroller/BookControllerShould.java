@@ -3,6 +3,7 @@ package com.library.rbc.controller.bookcontroller;
 import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.PAGE_NUMBER;
 import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.PAGE_SIZE;
 import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.createBookDtos;
+import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.createBookDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -37,5 +38,15 @@ public class BookControllerShould {
 
     Page<BookDto> expected = createBookDtos();
     assertEquals(expected, result);
+  }
+
+  @Test
+  void addNewBook() {
+    BookDto expected = createBookDto();
+
+    when(bookService.addNewBook(expected)).thenReturn(expected);
+    BookDto actual = bookController.addBook(expected).getBody();
+
+    assertEquals(expected, actual);
   }
 }
