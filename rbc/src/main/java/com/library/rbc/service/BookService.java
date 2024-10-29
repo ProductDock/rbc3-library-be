@@ -1,6 +1,7 @@
 package com.library.rbc.service;
 
 import com.library.rbc.exceptionHandler.BookNotFoundException;
+import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.repository.BookRepository;
@@ -25,5 +26,11 @@ public class BookService {
     return bookMapper.bookToBookDto(
         bookRepository.findById(id)
             .orElseThrow(() -> new BookNotFoundException("There is no book with id: " + id)));
+  }
+
+  public BookDto addNewBook(BookDto bookDTO) {
+    Book savedBook = bookMapper.bookDtoToBook(bookDTO);
+    bookRepository.save(savedBook);
+    return bookDTO;
   }
 }

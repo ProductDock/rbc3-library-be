@@ -67,4 +67,14 @@ public class BookControllerShould {
     String actualMessage = exception.getMessage();
     assertTrue(actualMessage.contains(expectedMessage));
   }
+
+  @Test
+  void addNewBook() {
+    BookDto expected = createBookDto();
+
+    when(bookService.addNewBook(expected)).thenReturn(expected);
+    BookDto actual = bookController.addBook(expected).getBody();
+
+    assertEquals(expected, actual);
+  }
 }
