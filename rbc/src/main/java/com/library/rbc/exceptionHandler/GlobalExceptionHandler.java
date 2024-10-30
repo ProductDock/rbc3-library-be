@@ -14,5 +14,11 @@ public class GlobalExceptionHandler {
   public @ResponseBody ErrorResponse handleException(BookNotFoundException ex) {
     return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
   }
+
+  @ExceptionHandler(value = CategoryBadRequestException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public @ResponseBody ErrorResponse handleException(CategoryBadRequestException ex) {
+    return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+  }
 }
 
