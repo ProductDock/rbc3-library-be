@@ -1,10 +1,13 @@
 package com.library.rbc.service;
 
 import com.library.rbc.exceptionHandler.BookNotFoundException;
+import com.library.rbc.exceptionHandler.CategoryBadRequestException;
 import com.library.rbc.model.Book;
+import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.repository.BookRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,5 +35,26 @@ public class BookService {
     Book savedBook = bookMapper.bookDtoToBook(bookDTO);
     bookRepository.save(savedBook);
     return bookDTO;
+  }
+
+  public List<BookDto> getBooksBy(Pageable pageable, List<String> bookCategories) {
+    if (bookCategories.contains("ALL")) {
+      return getAllBooks(pageable).stream().toList();
+    } else {
+      List<BookCategoryDto> bookCategoryDto = convertStringToBookCategoryDto(bookCategories);
+
+      return bookRepository.findByBookCategoriesIn(bookCategoryDto);
+    }
+  }
+
+  private List<BookCategoryDto> convertStringToBookCategoryDto(List<String> bookCategories) {
+    return bookCategories.stream()
+        .map(category -> {
+          try {
+            return BookCategoryDto.valueOf(category.toUpperCase());
+          } catch (IllegalArgumentException e) {
+            throw new CategoryBadRequestException("Provided category does not exist");
+          }
+        }).toList();
   }
 }
