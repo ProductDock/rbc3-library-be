@@ -20,5 +20,11 @@ public class GlobalExceptionHandler {
   public @ResponseBody ErrorResponse handleException(CategoryBadRequestException ex) {
     return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
   }
+
+  @ExceptionHandler(value = StatusBadRequestException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public @ResponseBody ErrorResponse handleException(StatusBadRequestException ex) {
+    return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+  }
 }
 
