@@ -1,4 +1,4 @@
-package com.library.rbc.exceptionHandler;
+package com.library.rbc.exceptionhandler;
 
 public class CategoryBadRequestException extends RuntimeException {
 

@@ -1,8 +1,9 @@
 package com.library.rbc.service;
 
-import com.library.rbc.exceptionHandler.BookNotFoundException;
-import com.library.rbc.exceptionHandler.CategoryBadRequestException;
-import com.library.rbc.exceptionHandler.StatusBadRequestException;
+import com.library.rbc.exceptionhandler.BookNotFoundException;
+import com.library.rbc.exceptionhandler.BookNotFoundException;
+import com.library.rbc.exceptionhandler.CategoryBadRequestException;
+import com.library.rbc.exceptionhandler.StatusBadRequestException;
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
@@ -31,7 +32,8 @@ public class BookService {
   public BookDto getBook(String id) {
     return bookMapper.bookToBookDto(
         bookRepository.findById(id)
-            .orElseThrow(() -> new BookNotFoundException("There is no book with id: " + id)));
+            .orElseThrow(
+                () -> new BookNotFoundException("Book with ID " + id + " was not found.")));
   }
 
   public BookDto addNewBook(BookDto bookDTO) {
