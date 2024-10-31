@@ -1,7 +1,6 @@
 package com.library.rbc.service;
 
 import com.library.rbc.exceptionhandler.BookNotFoundException;
-import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.exceptionhandler.CategoryBadRequestException;
 import com.library.rbc.exceptionhandler.StatusBadRequestException;
 import com.library.rbc.model.Book;
