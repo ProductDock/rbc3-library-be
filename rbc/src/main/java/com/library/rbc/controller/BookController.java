@@ -44,7 +44,8 @@ public class BookController {
 
   @GetMapping("/filter")
   public List<BookDto> returnBookBy(@ParameterObject @PageableDefault(size = 12) Pageable pageable,
-      @RequestParam(required = false) List<String> bookCategories) {
-    return bookService.getBooksBy(pageable, bookCategories);
+      @RequestParam(defaultValue = "ALL") List<String> bookCategories,
+      @RequestParam(defaultValue = "ALL") List<String> bookStatuses) {
+    return bookService.getBooksBy(pageable, bookCategories, bookStatuses);
   }
 }
