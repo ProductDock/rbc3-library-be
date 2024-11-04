@@ -7,6 +7,7 @@ import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
+import com.library.rbc.model.dto.BookStatusDto;
 import com.library.rbc.model.enums.BookStatus;
 import com.library.rbc.repository.BookRepository;
 import java.util.List;
@@ -41,47 +42,30 @@ public class BookService {
     return bookDTO;
   }
 
-  public List<BookDto> getBooksBy(Pageable pageable, List<String> bookCategories,
+  public Page<BookDto> getBooksBy(Pageable pageable, List<String> bookCategories,
       List<String> bookStatuses) {
     return getBooksByCategoriesAndStatuses(pageable, bookCategories, bookStatuses);
   }
 
-  private List<BookDto> getBooksByCategoriesAndStatuses(Pageable pageable,
+  private Page<BookDto> getBooksByCategoriesAndStatuses(Pageable pageable,
       List<String> bookCategories,
       List<String> bookStatuses) {
     if (bookCategories.contains("ALL")) {
       if (bookStatuses.contains("ALL")) {
-        return getAllBooks(pageable).stream().toList();
+        return getAllBooks(pageable);
       } else {
-        List<BookDto> allBooks = getAllBooks(pageable).stream().toList();
-        return returnBooksByStatuses(allBooks, bookStatuses);
+        List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
+        return bookRepository.findByBookStatusIn(pageable, statuses);
       }
     } else {
       List<BookCategoryDto> bookCategoryDto = convertStringsToBookCategoriesDto(bookCategories);
       if (bookStatuses.contains("ALL")) {
-        return bookRepository.findByBookCategoriesIn(bookCategoryDto);
+        return bookRepository.findByBookCategoriesIn(pageable, bookCategoryDto);
       } else {
-        List<BookDto> booksByCategory = bookRepository.findByBookCategoriesIn(bookCategoryDto);
-        return returnBooksByStatuses(booksByCategory, bookStatuses);
-
+        List<BookStatusDto> statusesDto = convertStringsToBookStatusesDto(bookStatuses);
+        return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statusesDto, bookCategoryDto);
       }
     }
-  }
-
-  private List<BookDto> returnBooksByStatuses(List<BookDto> books, List<String> bookStatuses) {
-    List<BookStatus> statuses = convertStringsToBookStatuses(bookStatuses);
-    return books.stream().filter(book -> {
-      if (statuses.isEmpty()) {
-        return true;
-      }
-      return statuses.stream()
-          .anyMatch(status -> switch (status) {
-            case AVAILABLE -> book.getNumberOfAvailableCopies() > 0;
-            case RENTED -> book.getNumberOfAvailableCopies() == 0;
-            case RESERVED -> !book.getUsersWhoReserved().isEmpty()
-                && book.getNumberOfAvailableCopies() == 0;
-          });
-    }).collect(Collectors.toList());
   }
 
   private List<BookCategoryDto> convertStringsToBookCategoriesDto(List<String> bookCategories) {
@@ -95,11 +79,11 @@ public class BookService {
         }).toList();
   }
 
-  private List<BookStatus> convertStringsToBookStatuses(List<String> bookStatuses) {
+  private List<BookStatusDto> convertStringsToBookStatusesDto(List<String> bookStatuses) {
     return bookStatuses.stream()
         .map(status -> {
           try {
-            return BookStatus.valueOf(status.toUpperCase());
+            return BookStatusDto.valueOf(status.toUpperCase());
           } catch (IllegalArgumentException e) {
             throw new StatusBadRequestException("Provided status does not exist");
           }
