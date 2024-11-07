@@ -8,10 +8,8 @@ import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.model.dto.BookStatusDto;
-import com.library.rbc.model.enums.BookStatus;
 import com.library.rbc.repository.BookRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,22 +48,27 @@ public class BookService {
   private Page<BookDto> getBooksByCategoriesAndStatuses(Pageable pageable,
       List<String> bookCategories,
       List<String> bookStatuses) {
+    Page<BookDto> resultedList;
     if (bookCategories.contains("ALL")) {
       if (bookStatuses.contains("ALL")) {
-        return getAllBooks(pageable);
+        resultedList = getAllBooks(pageable);
       } else {
         List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
-        return bookRepository.findByBookStatusIn(pageable, statuses);
+        resultedList = bookRepository.findByBookStatusIn(pageable, statuses);
       }
     } else {
       List<BookCategoryDto> bookCategoryDto = convertStringsToBookCategoriesDto(bookCategories);
       if (bookStatuses.contains("ALL")) {
-        return bookRepository.findByBookCategoriesIn(pageable, bookCategoryDto);
+        resultedList = bookRepository.findByBookCategoriesIn(pageable, bookCategoryDto);
       } else {
         List<BookStatusDto> statusesDto = convertStringsToBookStatusesDto(bookStatuses);
-        return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statusesDto, bookCategoryDto);
+        resultedList = bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statusesDto,
+            bookCategoryDto);
       }
     }
+    if (resultedList.isEmpty())
+      throw new BookNotFoundException("There are no books that match your request");
+    return resultedList;
   }
 
   private List<BookCategoryDto> convertStringsToBookCategoriesDto(List<String> bookCategories) {
