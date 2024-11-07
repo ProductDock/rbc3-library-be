@@ -1,6 +1,5 @@
 package com.library.rbc.integration.bookcontroller;
 
-import static com.library.rbc.integration.bookcontroller.BookSetUp.BOOK_CATEGORIES;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.library.rbc.model.Book;

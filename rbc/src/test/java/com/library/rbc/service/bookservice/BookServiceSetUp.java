@@ -1,7 +1,5 @@
 package com.library.rbc.service.bookservice;
 
-import static com.library.rbc.model.enums.BookStatus.AVAILABLE;
-
 import com.library.rbc.model.Author;
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.AuthorDto;
