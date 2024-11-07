@@ -65,7 +65,7 @@ public class ReviewControllerShould {
     ReviewDto expected = createReviewDto();
 
     when(reviewService.addReview(expected)).thenReturn(expected);
-    ReviewDto actual = reviewController.addReview(expected).getBody();
+    ReviewDto actual = reviewController.addReview(expected);
 
     assertEquals(expected, actual);
   }

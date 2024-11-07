@@ -30,6 +30,6 @@ public class ReviewService {
   public ReviewDto addReview(ReviewDto reviewDto) {
     Review review = reviewMapper.reviewDtoToReview(reviewDto);
     reviewRepository.save(review);
-    return reviewDto;
+    return reviewMapper.reviewToReviewDto(review);
   }
 }

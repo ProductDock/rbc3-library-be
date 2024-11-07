@@ -17,8 +17,6 @@ public class ReviewSetUp {
   static final Integer REVIEW_RATING = 5;
   static final String REVIEW_CONTENT = "Content";
   static final List<Seniority> REVIEW_SENIORITIES = List.of();
-  static final List<SeniorityDto> REVIEW_SENIORITY_DTO = List.of(SeniorityDto.JUNIOR,
-      SeniorityDto.MEDIOR);
   static final LocalDateTime REVIEW_DATE_TIME = LocalDateTime.now();
   static final String BOOK_ID = "1";
   static final String USER_ID = "1";

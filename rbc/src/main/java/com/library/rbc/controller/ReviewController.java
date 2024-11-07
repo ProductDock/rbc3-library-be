@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,8 +31,8 @@ public class ReviewController {
   }
 
   @PostMapping
-  public ResponseEntity<ReviewDto> addReview(@RequestBody ReviewDto reviewDto) {
-    ReviewDto result = reviewService.addReview(reviewDto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(result);
+  @ResponseStatus(HttpStatus.CREATED)
+  public ReviewDto addReview(@RequestBody ReviewDto reviewDto) {
+    return reviewService.addReview(reviewDto);
   }
 }
