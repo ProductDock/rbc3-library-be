@@ -1,4 +1,4 @@
-package com.library.rbc.exceptionHandler;
+package com.library.rbc.exceptionhandler;
 
 public class BookNotFoundException extends RuntimeException {
 
@@ -6,4 +6,3 @@ public class BookNotFoundException extends RuntimeException {
     super(message);
   }
 }
-

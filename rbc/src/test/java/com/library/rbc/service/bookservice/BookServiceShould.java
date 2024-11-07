@@ -15,7 +15,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.library.rbc.exceptionHandler.BookNotFoundException;
+import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
@@ -77,7 +77,7 @@ public class BookServiceShould {
       bookService.getBook(BOOK_ID);
     });
 
-    String expectedMessage = "There is no book with id: " + BOOK_ID;
+    String expectedMessage = "Book with ID " + BOOK_ID + " was not found.";
     String actualMessage = exception.getMessage();
     assertTrue(actualMessage.contains(expectedMessage));
     verify(bookMapper, never()).bookToBookDto(any());
