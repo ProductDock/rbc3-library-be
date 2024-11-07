@@ -1,5 +1,6 @@
 package com.library.rbc.integration.bookcontroller;
 
+import static com.library.rbc.integration.bookcontroller.BookSetUp.BOOK_CATEGORIES;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.library.rbc.model.Book;
@@ -95,5 +96,32 @@ public class IntegrationTest {
         .jsonPath("$.imageUrl").isEqualTo(BookSetUp.BOOK_IMAGE_URL)
         .jsonPath("$.numberOfAvailableCopies").isEqualTo(BookSetUp.BOOK_NUMBER_OF_AVAILABLE_COPIES)
         .jsonPath("$.usersWhoFavourited").isEmpty();
+  }
+
+  @Test
+  public void shouldFilterBook(){
+    Book book1 = BookSetUp.createBook1();
+
+    bookRepository.save(book1);
+
+    webClient.get()
+        .uri(uriBuilder ->
+            uriBuilder.path("/books/filter")
+                .queryParam("bookCategories", "MARKETING")
+                .queryParam("bookStatuses", "AVAILABLE")
+                .build())
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .jsonPath("$.content[0].id").isEqualTo(BookSetUp.BOOK_ID)
+        .jsonPath("$.content[0].title").isEqualTo(BookSetUp.BOOK_TITLE)
+        .jsonPath("$.content[0].authors[0].id").isEqualTo(BookSetUp.BOOK_AUTHOR.getId())
+        .jsonPath("$.content[0].authors[0].fullName").isEqualTo(BookSetUp.BOOK_AUTHOR.getFullName())
+        .jsonPath("$.content[0].imageUrl").isEqualTo(BookSetUp.BOOK_IMAGE_URL)
+        .jsonPath("$.content[0].bookStatus").isEqualTo(BookSetUp.BOOK_STATUS)
+        .jsonPath("$.content[0].bookCategories[0]").isEqualTo(BookSetUp.BOOK_CATEGORY)
+        .jsonPath("$.content[0].numberOfAvailableCopies")
+        .isEqualTo(BookSetUp.BOOK_NUMBER_OF_AVAILABLE_COPIES)
+        .jsonPath("$.content[0].usersWhoFavourited").isEmpty();
   }
 }
