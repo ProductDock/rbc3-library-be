@@ -66,8 +66,9 @@ public class BookService {
             bookCategoryDto);
       }
     }
-    if (resultedList.isEmpty())
+    if (resultedList.getTotalElements() == 0) {
       throw new BookNotFoundException("There are no books that match your request");
+    }
     return resultedList;
   }
 
