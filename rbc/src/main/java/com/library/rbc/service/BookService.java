@@ -40,36 +40,38 @@ public class BookService {
     return bookDTO;
   }
 
-  public Page<BookDto> getBooksBy(Pageable pageable, List<String> bookCategories,
-      List<String> bookStatuses) {
-    return getBooksByCategoriesAndStatuses(pageable, bookCategories, bookStatuses);
-  }
-
-  private Page<BookDto> getBooksByCategoriesAndStatuses(Pageable pageable,
+  public Page<BookDto> getBooksBy(Pageable pageable,
       List<String> bookCategories,
       List<String> bookStatuses) {
     Page<BookDto> resultedList;
-    if (bookCategories.contains("ALL")) {
-      if (bookStatuses.contains("ALL")) {
-        resultedList = getAllBooks(pageable);
-      } else {
-        List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
-        resultedList = bookRepository.findByBookStatusIn(pageable, statuses);
-      }
-    } else {
-      List<BookCategoryDto> bookCategoryDto = convertStringsToBookCategoriesDto(bookCategories);
-      if (bookStatuses.contains("ALL")) {
-        resultedList = bookRepository.findByBookCategoriesIn(pageable, bookCategoryDto);
-      } else {
-        List<BookStatusDto> statusesDto = convertStringsToBookStatusesDto(bookStatuses);
-        resultedList = bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statusesDto,
-            bookCategoryDto);
-      }
+    if (bookCategories == null)
+      resultedList = returnBooksByStatuses(pageable, bookStatuses);
+    else {
+      resultedList = returnBooksByCategoriesAndStatuses(pageable,bookStatuses,bookCategories);
     }
     if (resultedList.getTotalElements() == 0) {
       throw new BookNotFoundException("There are no books that match your request");
     }
     return resultedList;
+  }
+
+  private Page<BookDto> returnBooksByStatuses (Pageable pageable, List<String> bookStatuses){
+    if(bookStatuses == null){
+      return getAllBooks(pageable);
+    }
+    List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
+    return bookRepository.findByBookStatusIn(pageable, statuses);
+  }
+
+  private Page<BookDto> returnBooksByCategoriesAndStatuses(Pageable pageable, List<String> bookStatuses, List<String> bookCategories){
+    List<BookCategoryDto> categories = convertStringsToBookCategoriesDto(bookCategories);
+    if (bookStatuses == null) {
+      return bookRepository.findByBookCategoriesIn(pageable, categories);
+    } else {
+      List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
+      return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statuses,
+          categories);
+    }
   }
 
   private List<BookCategoryDto> convertStringsToBookCategoriesDto(List<String> bookCategories) {

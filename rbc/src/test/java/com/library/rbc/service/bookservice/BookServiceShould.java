@@ -103,8 +103,8 @@ public class BookServiceShould {
 
   @Test
   void getBooksByAllStatusesAndCategories() {
-    List<String> categories= List.of("ALL");
-    List<String> statuses= List.of("ALL");
+    List<String> categories= null;
+    List<String> statuses= null;
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
     Book book = createBook();
     BookDto bookDto = createBookDto();
@@ -120,7 +120,7 @@ public class BookServiceShould {
   }
   @Test
   void getBooksByAllCategoriesAndSpecificStatus() {
-    List<String> categories = List.of("ALL");
+    List<String> categories = null;
     List<String> statuses = List.of("AVAILABLE");
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
     List<BookStatusDto>  bookStatusesDto = List.of(BookStatusDto.AVAILABLE);
@@ -135,7 +135,7 @@ public class BookServiceShould {
 
   @Test
   void getBooksBySpecificCategoriesAndAllStatuses(){
-    List<String> statuses = List.of("ALL");
+    List<String> statuses = null;
     List<String> categories = List.of("MARKETING");
     Pageable pageable= PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
     List<BookCategoryDto> bookCategoriesDto = List.of(BookCategoryDto.MARKETING);
