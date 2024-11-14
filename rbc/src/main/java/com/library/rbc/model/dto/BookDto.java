@@ -12,6 +12,7 @@ public class BookDto {
   private String title;
   private List<AuthorDto> authors;
   private String imageUrl;
+  private String description;
   private Integer numberOfAvailableCopies;
   private List<String> usersWhoFavourited;
   private List<String> usersOnWaitingList;
