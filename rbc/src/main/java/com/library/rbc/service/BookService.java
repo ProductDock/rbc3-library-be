@@ -43,16 +43,10 @@ public class BookService {
   public Page<BookDto> getBooksBy(Pageable pageable,
       List<String> bookCategories,
       List<String> bookStatuses) {
-    Page<BookDto> resultedList;
-    if (bookCategories == null)
-      resultedList = returnBooksByStatuses(pageable, bookStatuses);
-    else {
-      resultedList = returnBooksByCategoriesAndStatuses(pageable,bookStatuses,bookCategories);
+    if (bookCategories == null){
+      return returnBooksByStatuses(pageable, bookStatuses);
     }
-    if (resultedList.getTotalElements() == 0) {
-      throw new BookNotFoundException("There are no books that match your request");
-    }
-    return resultedList;
+      return returnBooksByCategoriesAndStatuses(pageable,bookStatuses,bookCategories);
   }
 
   private Page<BookDto> returnBooksByStatuses (Pageable pageable, List<String> bookStatuses){
@@ -67,11 +61,9 @@ public class BookService {
     List<BookCategoryDto> categories = convertStringsToBookCategoriesDto(bookCategories);
     if (bookStatuses == null) {
       return bookRepository.findByBookCategoriesIn(pageable, categories);
-    } else {
-      List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
-      return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statuses,
-          categories);
     }
+      List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
+      return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statuses, categories);
   }
 
   private List<BookCategoryDto> convertStringsToBookCategoriesDto(List<String> bookCategories) {
