@@ -1,7 +1,9 @@
 package com.library.rbc.controller;
 
 import com.library.rbc.model.dto.BookDto;
+import com.library.rbc.model.dto.ImageDto;
 import com.library.rbc.service.BookService;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/books")
@@ -38,5 +42,11 @@ public class BookController {
   public ResponseEntity<BookDto> addBook(@RequestBody BookDto book) {
     BookDto result = bookService.addNewBook(book);
     return ResponseEntity.status(HttpStatus.CREATED).body(result);
+  }
+
+  @PostMapping("/upload-image")
+  public ResponseEntity<ImageDto> uploadImage(@RequestPart MultipartFile image) {
+    String result = bookService.uploadImage(image);
+    return ResponseEntity.status(HttpStatus.OK).body(new ImageDto(result));
   }
 }
