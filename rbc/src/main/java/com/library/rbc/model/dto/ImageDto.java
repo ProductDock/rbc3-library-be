@@ -6,6 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class ImageDto {
-  String imageName;
+  String imagePath;
 
 }

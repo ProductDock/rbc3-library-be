@@ -1,6 +1,7 @@
 package com.library.rbc.service;
 
 import com.library.rbc.exceptionhandler.BookNotFoundException;
+import com.library.rbc.exceptionhandler.ImageUploadException;
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
@@ -44,23 +45,19 @@ public class BookService {
   }
 
 
-  public String uploadImage(MultipartFile image) {
+  public String uploadImage(MultipartFile image){
     String homeDirectory = System.getProperty("user.home");
     Path uploadPath = Paths.get(homeDirectory, "Documents/images");
-
     try {
       if (!Files.exists(uploadPath)) {
         Files.createDirectories(uploadPath);
       }
       InputStream inputStream = image.getInputStream();
-
       Path filePath = uploadPath.resolve(Objects.requireNonNull(image.getOriginalFilename()));
       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-
-
-    } catch (IOException ioe) {
-
+    } catch (IOException e) {
+      throw new ImageUploadException("Failed uploading image");
     }
-    return image.getOriginalFilename();
+    return uploadPath+image.getOriginalFilename();
   }
 }
