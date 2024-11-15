@@ -32,5 +32,12 @@ public class GlobalExceptionHandler {
   public @ResponseBody ErrorResponse handleException(ImageUploadException ex) {
     return new ErrorResponse(ex.getMessage());
   }
+
+  @ExceptionHandler(value = ContentTypeException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public @ResponseBody ErrorResponse handleException(ContentTypeException ex) {
+    return new ErrorResponse(ex.getMessage());
+  }
+
 }
 

@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 
 import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.exceptionhandler.CategoryBadRequestException;
+import com.library.rbc.exceptionhandler.ContentTypeException;
 import com.library.rbc.exceptionhandler.ImageUploadException;
 import com.library.rbc.exceptionhandler.StatusBadRequestException;
 import com.library.rbc.model.Book;
@@ -198,6 +199,17 @@ public class BookServiceShould {
 
     assertEquals("Provided status does not exist", exception.getMessage());
   }
+
+  @Test
+  void throwContentTypeException() {
+    MultipartFile mockFile = new MockMultipartFile("file", "test-file.txt", "text/plain",
+        (byte[]) null);
+    ContentTypeException exception = assertThrows(ContentTypeException.class, () -> {
+      bookService.uploadImage(mockFile);
+    });
+    assertEquals("Provided file must be image", exception.getMessage());
+  }
+
 
   @Test
   void throwIOExceptionOnUploadImage() throws IOException {

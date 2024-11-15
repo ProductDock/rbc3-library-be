@@ -2,6 +2,7 @@ package com.library.rbc.service;
 
 import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.exceptionhandler.CategoryBadRequestException;
+import com.library.rbc.exceptionhandler.ContentTypeException;
 import com.library.rbc.exceptionhandler.ImageUploadException;
 import com.library.rbc.exceptionhandler.StatusBadRequestException;
 import com.library.rbc.model.Book;
@@ -98,6 +99,9 @@ public class BookService {
   }
 
   public String uploadImage(MultipartFile image){
+    if (image.getContentType() != null && !image.getContentType().contains("image")) {
+      throw new ContentTypeException("Provided file must be image");
+    }
     String homeDirectory = System.getProperty("user.home");
     Path uploadPath = Paths.get(homeDirectory, "Documents", "images");
     try {
@@ -111,6 +115,5 @@ public class BookService {
       throw new ImageUploadException("Failed uploading image");
     }
     return uploadPath.resolve(image.getOriginalFilename()).toString();
-
   }
 }
