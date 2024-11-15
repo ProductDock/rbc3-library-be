@@ -77,4 +77,16 @@ public class ReviewServiceShould {
     assertTrue(actualMessage.contains(expectedMessage));
     verify(reviewMapper, never()).reviewToReviewDto(any());
   }
+
+  @Test
+  void addNewReview() {
+    Review review = createReview();
+    ReviewDto expected = createReviewDto();
+
+    when(reviewMapper.reviewDtoToReview(expected)).thenReturn(review);
+    when(reviewRepository.save(review)).thenReturn(review);
+    ReviewDto actual = reviewService.addReview(expected);
+
+    assertEquals(expected, actual);
+  }
 }

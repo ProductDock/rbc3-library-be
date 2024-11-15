@@ -15,13 +15,12 @@ public class ReviewServiceSetUp {
 
   static final String REVIEW_ID = "1";
   static final Integer REVIEW_RATING = 5;
-  static final String REVIEW_CONTENT = "Content";
+  static final String REVIEW_CONTENT = "Great book!";
   static final List<Seniority> REVIEW_SENIORITIES = List.of();
   static final List<SeniorityDto> REVIEW_SENIORITY_DTOS = List.of();
   static final LocalDateTime REVIEW_DATE_TIME = LocalDateTime.now();
-  static final String BOOK_ID = "1";
   static final String USER_ID = "1";
-
+  static final String BOOK_ID = "1";
   static final int PAGE_NUMBER = 0;
   static final int PAGE_SIZE = 10;
 
@@ -32,8 +31,8 @@ public class ReviewServiceSetUp {
         .content(REVIEW_CONTENT)
         .seniorities(REVIEW_SENIORITIES)
         .dateTime(REVIEW_DATE_TIME)
-        .bookId(BOOK_ID)
         .userId(USER_ID)
+        .bookId(BOOK_ID)
         .build();
   }
 
@@ -44,8 +43,8 @@ public class ReviewServiceSetUp {
         .content(REVIEW_CONTENT)
         .seniorities(REVIEW_SENIORITY_DTOS)
         .dateTime(REVIEW_DATE_TIME)
-        .bookId(BOOK_ID)
         .userId(USER_ID)
+        .bookId(BOOK_ID)
         .build();
   }
 

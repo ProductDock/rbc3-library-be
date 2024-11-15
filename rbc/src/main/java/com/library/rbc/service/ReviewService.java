@@ -1,6 +1,7 @@
 package com.library.rbc.service;
 
 import com.library.rbc.exceptionhandler.BookNotFoundException;
+import com.library.rbc.model.Review;
 import com.library.rbc.model.dto.ReviewDto;
 import com.library.rbc.model.dto.ReviewMapper;
 import com.library.rbc.repository.BookRepository;
@@ -24,5 +25,11 @@ public class ReviewService {
     }
     return reviewRepository.findByBookId(bookId, pageable)
         .map(reviewMapper::reviewToReviewDto);
+  }
+
+  public ReviewDto addReview(ReviewDto reviewDto) {
+    Review review = reviewMapper.reviewDtoToReview(reviewDto);
+    reviewRepository.save(review);
+    return reviewMapper.reviewToReviewDto(review);
   }
 }

@@ -4,6 +4,8 @@ import static com.library.rbc.controller.reviewcontroller.ReviewControllerSetUp.
 import static com.library.rbc.controller.reviewcontroller.ReviewControllerSetUp.PAGE_NUMBER;
 import static com.library.rbc.controller.reviewcontroller.ReviewControllerSetUp.PAGE_SIZE;
 import static com.library.rbc.controller.reviewcontroller.ReviewControllerSetUp.createReviewDtosPage;
+import static com.library.rbc.controller.reviewcontroller.ReviewControllerSetUp.createReviewDto;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,4 +59,15 @@ public class ReviewControllerShould {
     String actualMessage = exception.getMessage();
     assertTrue(actualMessage.contains(expectedMessage));
   }
+
+  @Test
+  void addReview() {
+    ReviewDto expected = createReviewDto();
+
+    when(reviewService.addReview(expected)).thenReturn(expected);
+    ReviewDto actual = reviewController.addReview(expected);
+
+    assertEquals(expected, actual);
+  }
+
 }
