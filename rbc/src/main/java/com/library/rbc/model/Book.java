@@ -1,6 +1,7 @@
 package com.library.rbc.model;
 
 import com.library.rbc.model.enums.BookCategory;
+import com.library.rbc.model.enums.BookStatus;
 import com.library.rbc.model.enums.BookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ public class Book {
     private Integer totalNumberOfCopies;
     private BookType bookType;
     private Integer numberOfAvailableCopies;
+    private BookStatus bookStatus;
     private List<String> usersWhoFavourited;
     private List<String> usersOnWaitingList;
     private List<String> usersWhoRented;
