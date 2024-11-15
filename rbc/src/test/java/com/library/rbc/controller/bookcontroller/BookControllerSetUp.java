@@ -3,6 +3,7 @@ package com.library.rbc.controller.bookcontroller;
 import com.library.rbc.model.dto.AuthorDto;
 import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
+import com.library.rbc.model.dto.BookStatusDto;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,6 +25,8 @@ public class BookControllerSetUp {
   static final List<String> USERS_WHO_RENTED = List.of();
   static final List<String> USERS_WHO_RESERVED = List.of();
   static final List<BookCategoryDto> BOOK_CATEGORY_DTOS = List.of();
+  static final List<String> BOOK_CATEGORIES = List.of("MARKETING");
+  static final List<String> BOOK_STATUS = List.of("AVAILABLE");
 
   static final int PAGE_NUMBER = 0;
   static final int PAGE_SIZE = 10;
@@ -35,6 +38,7 @@ public class BookControllerSetUp {
         .authors(BOOK_AUTHOR_DTOS)
         .imageUrl(BOOK_IMAGE_URL)
         .numberOfAvailableCopies(BOOK_NUMBER_OF_AVAILABLE_COPIES)
+        .bookStatus(BookStatusDto.AVAILABLE)
         .usersWhoFavourited(USERS_WHO_FAVORITED_BOOK)
         .usersOnWaitingList(USERS_ON_WAITING_LIST)
         .usersWhoRented(USERS_WHO_RENTED)

@@ -14,6 +14,7 @@ public class BookDto {
   private String imageUrl;
   private String description;
   private Integer numberOfAvailableCopies;
+  private BookStatusDto bookStatus;
   private List<String> usersWhoFavourited;
   private List<String> usersOnWaitingList;
   private List<String> usersWhoRented;

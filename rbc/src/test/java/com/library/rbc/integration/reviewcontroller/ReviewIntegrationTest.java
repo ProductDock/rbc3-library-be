@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.library.rbc.model.Book;
+import com.library.rbc.model.dto.ReviewDto;
 import com.library.rbc.model.Review;
 import com.library.rbc.repository.BookRepository;
 import com.library.rbc.repository.ReviewRepository;
@@ -83,5 +84,25 @@ public class ReviewIntegrationTest {
         .expectStatus().isNotFound()
         .expectBody()
         .jsonPath("$.message").isEqualTo("Book with ID " + BOOK_ID + " was not found.");
+  }
+
+  @Test
+  public void shouldAddNewReview() {
+    ReviewDto review = ReviewSetUp.createReviewDto();
+
+    webClient.post()
+        .uri("/books/" + ReviewSetUp.BOOK_ID + "/reviews")
+        .bodyValue(review)
+        .exchange()
+        .expectStatus().isCreated()
+        .expectBody()
+        .jsonPath("$.id").isEqualTo(ReviewSetUp.REVIEW_ID)
+        .jsonPath("$.rating").isEqualTo(ReviewSetUp.REVIEW_RATING)
+        .jsonPath("$.content").isEqualTo(ReviewSetUp.REVIEW_CONTENT)
+        .jsonPath("$.seniorities[0]").isEqualTo("JUNIOR")
+        .jsonPath("$.seniorities[1]").isEqualTo("MEDIOR")
+        .jsonPath("$.dateTime").isEqualTo(ReviewSetUp.REVIEW_DATE_TIME.toString())
+        .jsonPath("$.bookId").isEqualTo(ReviewSetUp.BOOK_ID)
+        .jsonPath("$.userId").isEqualTo(ReviewSetUp.USER_ID);
   }
 }
