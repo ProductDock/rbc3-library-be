@@ -1,8 +1,8 @@
 package com.library.rbc.service;
 
 import com.library.rbc.exceptionhandler.BookNotFoundException;
-import com.library.rbc.exceptionhandler.ImageUploadException;
 import com.library.rbc.exceptionhandler.CategoryBadRequestException;
+import com.library.rbc.exceptionhandler.ImageUploadException;
 import com.library.rbc.exceptionhandler.StatusBadRequestException;
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookCategoryDto;
@@ -10,13 +10,13 @@ import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.model.dto.BookStatusDto;
 import com.library.rbc.repository.BookRepository;
-import java.util.List;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -71,8 +71,8 @@ public class BookService {
     if (bookStatuses == null) {
       return bookRepository.findByBookCategoriesIn(pageable, categories);
     }
-      List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
-      return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statuses, categories);
+    List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
+    return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statuses, categories);
   }
 
   private List<BookCategoryDto> convertStringsToBookCategoriesDto(List<String> bookCategories) {
@@ -99,7 +99,7 @@ public class BookService {
 
   public String uploadImage(MultipartFile image){
     String homeDirectory = System.getProperty("user.home");
-    Path uploadPath = Paths.get(homeDirectory, "Documents/images");
+    Path uploadPath = Paths.get(homeDirectory, "Documents", "images");
     try {
       if (!Files.exists(uploadPath)) {
         Files.createDirectories(uploadPath);
@@ -110,6 +110,7 @@ public class BookService {
     } catch (IOException e) {
       throw new ImageUploadException("Failed uploading image");
     }
-    return uploadPath+image.getOriginalFilename();
+    return uploadPath.resolve(image.getOriginalFilename()).toString();
+
   }
 }

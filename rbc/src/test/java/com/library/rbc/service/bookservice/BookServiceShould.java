@@ -8,6 +8,7 @@ import static com.library.rbc.service.bookservice.BookServiceSetUp.createBookDto
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBookDtosPage;
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBooksPage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.when;
 
 import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.exceptionhandler.CategoryBadRequestException;
+import com.library.rbc.exceptionhandler.ImageUploadException;
 import com.library.rbc.exceptionhandler.StatusBadRequestException;
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookCategoryDto;
@@ -25,7 +27,11 @@ import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.model.dto.BookStatusDto;
 import com.library.rbc.repository.BookRepository;
 import com.library.rbc.service.BookService;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +41,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceShould {
@@ -48,6 +56,8 @@ public class BookServiceShould {
   @Mock
   private BookMapper bookMapper;
 
+  @Mock
+  MultipartFile mockImage;
 
   @Test
   void getAllBooks() {
@@ -189,4 +199,31 @@ public class BookServiceShould {
 
     assertEquals("Provided status does not exist", exception.getMessage());
   }
+
+  @Test
+  void throwIOExceptionOnUploadImage() throws IOException {
+    when(mockImage.getInputStream()).thenThrow(new IOException("Failed to get input stream"));
+
+    ImageUploadException exception = assertThrows(ImageUploadException.class,
+        () -> bookService.uploadImage(mockImage));
+    assertEquals("Failed uploading image", exception.getMessage());
+  }
+
+  @Test
+  void uploadImage() throws IOException {
+    MultipartFile mockFile = new MockMultipartFile("file", "test-image.jpg", "image/jpeg",
+        (byte[]) null);
+    String homeDirectory = System.getProperty("user.home");
+    Path uploadPath = Path.of(homeDirectory, "Documents", "images");
+    if (!Files.exists(uploadPath)) {
+      Files.createDirectories(uploadPath);
+    }
+    String actual = bookService.uploadImage(mockFile);
+    Path expected = uploadPath.resolve(Objects.requireNonNull(mockFile.getOriginalFilename()));
+
+    assertNotNull(actual);
+    assertEquals(expected.toString(), actual);
+  }
 }
+
+
