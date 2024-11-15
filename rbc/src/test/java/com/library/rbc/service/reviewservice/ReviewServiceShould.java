@@ -85,8 +85,11 @@ public class ReviewServiceShould {
 
     when(reviewMapper.reviewDtoToReview(expected)).thenReturn(review);
     when(reviewRepository.save(review)).thenReturn(review);
+    when(reviewMapper.reviewToReviewDto(review)).thenReturn(expected);
+
     ReviewDto actual = reviewService.addReview(expected);
 
     assertEquals(expected, actual);
   }
+  
 }
