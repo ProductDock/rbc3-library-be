@@ -28,7 +28,6 @@ import com.library.rbc.model.dto.BookStatusDto;
 import com.library.rbc.repository.BookRepository;
 import com.library.rbc.service.BookService;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
@@ -210,14 +209,12 @@ public class BookServiceShould {
   }
 
   @Test
-  void uploadImage() throws IOException {
+  void uploadImage() {
     MultipartFile mockFile = new MockMultipartFile("file", "test-image.jpg", "image/jpeg",
         (byte[]) null);
     String homeDirectory = System.getProperty("user.home");
     Path uploadPath = Path.of(homeDirectory, "Documents", "images");
-    if (!Files.exists(uploadPath)) {
-      Files.createDirectories(uploadPath);
-    }
+
     String actual = bookService.uploadImage(mockFile);
     Path expected = uploadPath.resolve(Objects.requireNonNull(mockFile.getOriginalFilename()));
 
