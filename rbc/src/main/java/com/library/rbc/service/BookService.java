@@ -99,11 +99,11 @@ public class BookService {
   }
 
   public String uploadImage(MultipartFile image){
-    if (image.getContentType() != null && !image.getContentType().contains("image")) {
-      throw new ContentTypeException("Provided file must be image");
-    }
     String homeDirectory = System.getProperty("user.home");
     Path uploadPath = Paths.get(homeDirectory, "Documents", "images");
+    if (image.getContentType() == null || !image.getContentType().contains("image")) {
+      throw new ContentTypeException("Provided file must be image");
+    }
     try {
       if (!Files.exists(uploadPath)) {
         Files.createDirectories(uploadPath);
