@@ -213,10 +213,12 @@ public class BookServiceShould {
 
   @Test
   void throwIOExceptionOnUploadImage() throws IOException {
+    when(mockImage.getContentType()).thenReturn("image/jpeg");
     when(mockImage.getInputStream()).thenThrow(new IOException("Failed to get input stream"));
 
     ImageUploadException exception = assertThrows(ImageUploadException.class,
         () -> bookService.uploadImage(mockImage));
+
     assertEquals("Failed uploading image", exception.getMessage());
   }
 
