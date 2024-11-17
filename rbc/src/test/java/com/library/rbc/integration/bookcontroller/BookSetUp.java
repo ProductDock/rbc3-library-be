@@ -42,6 +42,7 @@ public class BookSetUp {
   static final int BOOK_TOTAL_NUMBER_OF_COPIES = 3;
   static final BookType BOOK_TYPE = BookType.BOOK;
   static final List<String> USERS_WHO_SUGGESTED_BOOK = List.of();
+  static final String IMAGE_PATH = "/Users/pd/Documents/images/test-image.jpg";
 
   static final String BOOK_2_ID = "2";
 
