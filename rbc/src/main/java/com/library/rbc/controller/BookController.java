@@ -54,8 +54,8 @@ public class BookController {
   }
 
   @PostMapping("/upload-image")
-  public ResponseEntity<ImageDto> uploadImage(@RequestPart MultipartFile image) {
+  public ImageDto uploadImage(@RequestPart MultipartFile image) {
     String result = bookService.uploadImage(image);
-    return ResponseEntity.status(HttpStatus.OK).body(new ImageDto(result));
+    return new ImageDto(result);
   }
 }

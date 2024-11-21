@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,15 +34,12 @@ public class BookService {
   private final BookMapper bookMapper;
 
   public Page<BookDto> getAllBooks(Pageable pageable) {
-    return bookRepository.findAll(pageable)
-        .map(bookMapper::bookToBookDto);
+    return bookRepository.findAll(pageable).map(bookMapper::bookToBookDto);
   }
 
   public BookDto getBook(String id) {
-    return bookMapper.bookToBookDto(
-        bookRepository.findById(id)
-            .orElseThrow(
-                () -> new BookNotFoundException("Book with ID " + id + " was not found.")));
+    return bookMapper.bookToBookDto(bookRepository.findById(id)
+        .orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " was not found.")));
   }
 
   public BookDto addNewBook(BookDto bookDTO) {
@@ -50,24 +48,24 @@ public class BookService {
     return bookDTO;
   }
 
-  public Page<BookDto> getBooksBy(Pageable pageable,
-      List<String> bookCategories,
+  public Page<BookDto> getBooksBy(Pageable pageable, List<String> bookCategories,
       List<String> bookStatuses) {
-    if (bookCategories == null){
+    if (bookCategories == null) {
       return returnBooksByStatuses(pageable, bookStatuses);
     }
-      return returnBooksByCategoriesAndStatuses(pageable,bookStatuses,bookCategories);
+    return returnBooksByCategoriesAndStatuses(pageable, bookStatuses, bookCategories);
   }
 
-  private Page<BookDto> returnBooksByStatuses (Pageable pageable, List<String> bookStatuses){
-    if(bookStatuses == null){
+  private Page<BookDto> returnBooksByStatuses(Pageable pageable, List<String> bookStatuses) {
+    if (bookStatuses == null) {
       return getAllBooks(pageable);
     }
     List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
     return bookRepository.findByBookStatusIn(pageable, statuses);
   }
 
-  private Page<BookDto> returnBooksByCategoriesAndStatuses(Pageable pageable, List<String> bookStatuses, List<String> bookCategories){
+  private Page<BookDto> returnBooksByCategoriesAndStatuses(Pageable pageable,
+      List<String> bookStatuses, List<String> bookCategories) {
     List<BookCategoryDto> categories = convertStringsToBookCategoriesDto(bookCategories);
     if (bookStatuses == null) {
       return bookRepository.findByBookCategoriesIn(pageable, categories);
@@ -77,28 +75,26 @@ public class BookService {
   }
 
   private List<BookCategoryDto> convertStringsToBookCategoriesDto(List<String> bookCategories) {
-    return bookCategories.stream()
-        .map(category -> {
-          try {
-            return BookCategoryDto.valueOf(category.toUpperCase());
-          } catch (IllegalArgumentException e) {
-            throw new CategoryBadRequestException("Provided category does not exist");
-          }
-        }).toList();
+    return bookCategories.stream().map(category -> {
+      try {
+        return BookCategoryDto.valueOf(category.toUpperCase());
+      } catch (IllegalArgumentException e) {
+        throw new CategoryBadRequestException("Provided category does not exist");
+      }
+    }).toList();
   }
 
   private List<BookStatusDto> convertStringsToBookStatusesDto(List<String> bookStatuses) {
-    return bookStatuses.stream()
-        .map(status -> {
-          try {
-            return BookStatusDto.valueOf(status.toUpperCase());
-          } catch (IllegalArgumentException e) {
-            throw new StatusBadRequestException("Provided status does not exist");
-          }
-        }).toList();
+    return bookStatuses.stream().map(status -> {
+      try {
+        return BookStatusDto.valueOf(status.toUpperCase());
+      } catch (IllegalArgumentException e) {
+        throw new StatusBadRequestException("Provided status does not exist");
+      }
+    }).toList();
   }
 
-  public String uploadImage(MultipartFile image){
+  public String uploadImage(MultipartFile image) {
     String homeDirectory = System.getProperty("user.home");
     Path uploadPath = Paths.get(homeDirectory, "Documents", "images");
     if (image.getContentType() == null || !image.getContentType().contains("image")) {
@@ -108,12 +104,21 @@ public class BookService {
       if (!Files.exists(uploadPath)) {
         Files.createDirectories(uploadPath);
       }
-      InputStream inputStream = image.getInputStream();
-      Path filePath = uploadPath.resolve(Objects.requireNonNull(image.getOriginalFilename()));
-      Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+      String originalFilename = Objects.requireNonNull(image.getOriginalFilename());
+      String extension = getFileExtension(originalFilename);
+      String uniqueFilename = UUID.randomUUID() + extension;
+      Path filePath = uploadPath.resolve(uniqueFilename);
+      try (InputStream inputStream = image.getInputStream()) {
+        Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+      }
+      return filePath.toString();
     } catch (IOException e) {
       throw new ImageUploadException("Failed uploading image");
     }
-    return uploadPath.resolve(image.getOriginalFilename()).toString();
+  }
+
+  private String getFileExtension(String filename) {
+    int dotIndex = filename.lastIndexOf('.');
+    return (dotIndex >= 0) ? filename.substring(dotIndex) : "";
   }
 }
