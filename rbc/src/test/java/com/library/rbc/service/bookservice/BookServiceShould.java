@@ -29,9 +29,7 @@ import com.library.rbc.model.dto.BookStatusDto;
 import com.library.rbc.repository.BookRepository;
 import com.library.rbc.service.BookService;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -216,9 +214,10 @@ public class BookServiceShould {
     when(mockImage.getContentType()).thenReturn("image/jpeg");
     when(mockImage.getInputStream()).thenThrow(new IOException("Failed to get input stream"));
 
-    ImageUploadException exception = assertThrows(ImageUploadException.class,
-        () -> bookService.uploadImage(mockImage));
-
+    when(mockImage.getOriginalFilename()).thenReturn("testImage.jpeg");
+    ImageUploadException exception = assertThrows(ImageUploadException.class, () -> {
+      bookService.uploadImage(mockImage);
+    });
     assertEquals("Failed uploading image", exception.getMessage());
   }
 
@@ -226,14 +225,12 @@ public class BookServiceShould {
   void uploadImage() {
     MultipartFile mockFile = new MockMultipartFile("file", "test-image.jpg", "image/jpeg",
         (byte[]) null);
-    String homeDirectory = System.getProperty("user.home");
-    Path uploadPath = Path.of(homeDirectory, "Documents", "images");
 
     String actual = bookService.uploadImage(mockFile);
-    Path expected = uploadPath.resolve(Objects.requireNonNull(mockFile.getOriginalFilename()));
+    String expectedRegex = ".*Documents/images/[a-f0-9-]+\\.jpg";
 
     assertNotNull(actual);
-    assertEquals(expected.toString(), actual);
+    assertTrue(actual.matches(expectedRegex));
   }
 }
 

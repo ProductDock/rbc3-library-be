@@ -28,7 +28,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
@@ -105,10 +104,10 @@ public class BookControllerShould {
     String imagePath = "path/to/image.jpg";
 
     when(bookService.uploadImage(mockImage)).thenReturn(imagePath);
-    ResponseEntity<ImageDto> response = bookController.uploadImage(mockImage);
+    ImageDto response = bookController.uploadImage(mockImage);
 
-    assertNotNull(response.getBody());
-    assertEquals(imagePath, response.getBody().getImagePath());
+    assertNotNull(response);
+    assertEquals(imagePath, response.getImagePath());
   }
 
 }

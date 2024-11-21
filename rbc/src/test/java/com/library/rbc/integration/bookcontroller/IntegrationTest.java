@@ -1,5 +1,6 @@
 package com.library.rbc.integration.bookcontroller;
 
+import static org.hamcrest.Matchers.matchesRegex;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.library.rbc.model.Book;
@@ -139,7 +140,8 @@ public class IntegrationTest {
         .exchange()
         .expectStatus().isOk()
         .expectBody()
-        .jsonPath("$.imagePath").isEqualTo(BookSetUp.IMAGE_PATH);
+        .jsonPath("$.imagePath")
+        .value(matchesRegex(".*Documents/images/[a-f0-9-]+\\.jpg"));
   }
 
   @Test
