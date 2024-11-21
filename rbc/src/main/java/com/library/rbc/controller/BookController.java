@@ -6,7 +6,6 @@ import com.library.rbc.service.BookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -52,10 +51,10 @@ public class BookController {
   }
 
   @GetMapping("/photo/{bookId}")
-  public ResponseEntity<InputStreamResource> returnPhotoBy(@PathVariable String bookId) {
+  public ResponseEntity<byte[]> returnPhotoBy(@PathVariable String bookId) {
     ImageWithMediaTypeDto imageWithMediaTypeDto = bookService.getBookImageById(bookId);
     return ResponseEntity.ok()
         .contentType(imageWithMediaTypeDto.getMediaType())
-        .body(new InputStreamResource(imageWithMediaTypeDto.getImageInputStream()));
+        .body(imageWithMediaTypeDto.getInputStreamResource());
   }
 }

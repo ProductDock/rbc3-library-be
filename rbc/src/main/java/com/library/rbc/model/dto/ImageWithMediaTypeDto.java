@@ -1,6 +1,5 @@
 package com.library.rbc.model.dto;
 
-import java.io.InputStream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.MediaType;
@@ -9,6 +8,6 @@ import org.springframework.http.MediaType;
 @AllArgsConstructor
 public class ImageWithMediaTypeDto {
 
-  private InputStream imageInputStream;
+  private byte[] inputStreamResource;
   private MediaType mediaType;
 }
