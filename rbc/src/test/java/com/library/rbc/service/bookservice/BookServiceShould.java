@@ -7,10 +7,12 @@ import static com.library.rbc.service.bookservice.BookServiceSetUp.createBook;
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBookDto;
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBookDtosPage;
 import static com.library.rbc.service.bookservice.BookServiceSetUp.createBooksPage;
+import static com.library.rbc.service.bookservice.BookServiceSetUp.createImageWithMediaTypeDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,21 +25,28 @@ import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.model.dto.BookStatusDto;
+import com.library.rbc.model.dto.ImageWithMediaTypeDto;
 import com.library.rbc.repository.BookRepository;
 import com.library.rbc.service.BookService;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceShould {
+
 
   @InjectMocks
   private BookService bookService;
@@ -189,4 +198,52 @@ public class BookServiceShould {
 
     assertEquals("Provided status does not exist", exception.getMessage());
   }
+
+  @Test
+  void testGetBookImageById_BookNotFound() {
+    when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.empty());
+    BookNotFoundException exception = assertThrows(BookNotFoundException.class, () -> {
+      bookService.getBookImageById(BOOK_ID);
+    });
+    assertEquals("Book with ID " + BOOK_ID + " was not found.", exception.getMessage());
+  }
+
+  @Test
+  void testGetBookImageById_ImageNotFound() {
+    when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(createBook()));
+    when(bookMapper.bookToBookDto(any(Book.class))).thenReturn(createBookDto());
+    MockedStatic<Files> mockFiles = mockStatic(Files.class);
+    mockFiles.when(() -> Files.readAllBytes(any(Path.class))).thenThrow(new IOException());
+
+    BookNotFoundException exception = assertThrows(BookNotFoundException.class, () -> {
+      bookService.getBookImageById(BOOK_ID);
+    });
+    assertEquals("Image for book with ID 1 could not be found or read.", exception.getMessage());
+    mockFiles.close();
+  }
+
+  @Test
+  void getBookImageById() {
+    ImageWithMediaTypeDto expected = createImageWithMediaTypeDto();
+    Book book = createBook();
+    BookDto bookDto = createBookDto();
+    MockedStatic<MediaType> mockMediaType = mockStatic(MediaType.class);
+    MockedStatic<Files> mockFiles = mockStatic(Files.class);
+
+    when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+    when(bookMapper.bookToBookDto(any(Book.class))).thenReturn(bookDto);
+
+    mockFiles.when(() -> Files.readAllBytes(any(Path.class))).thenReturn(new byte[]{});
+    mockFiles.when(() -> Files.probeContentType(any(Path.class)))
+        .thenReturn(MediaType.IMAGE_JPEG_VALUE);
+    mockMediaType.when(() -> MediaType.valueOf(any(String.class)))
+        .thenReturn(MediaType.IMAGE_JPEG);
+
+    ImageWithMediaTypeDto actual = bookService.getBookImageById(BOOK_ID);
+    assertEquals(expected, actual);
+
+    mockFiles.close();
+    mockMediaType.close();
+  }
+
 }

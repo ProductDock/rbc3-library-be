@@ -8,11 +8,17 @@ import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.model.dto.BookStatusDto;
+import com.library.rbc.model.dto.ImageWithMediaTypeDto;
 import com.library.rbc.repository.BookRepository;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,27 +49,28 @@ public class BookService {
   public Page<BookDto> getBooksBy(Pageable pageable,
       List<String> bookCategories,
       List<String> bookStatuses) {
-    if (bookCategories == null){
+    if (bookCategories == null) {
       return returnBooksByStatuses(pageable, bookStatuses);
     }
-      return returnBooksByCategoriesAndStatuses(pageable,bookStatuses,bookCategories);
+    return returnBooksByCategoriesAndStatuses(pageable, bookStatuses, bookCategories);
   }
 
-  private Page<BookDto> returnBooksByStatuses (Pageable pageable, List<String> bookStatuses){
-    if(bookStatuses == null){
+  private Page<BookDto> returnBooksByStatuses(Pageable pageable, List<String> bookStatuses) {
+    if (bookStatuses == null) {
       return getAllBooks(pageable);
     }
     List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
     return bookRepository.findByBookStatusIn(pageable, statuses);
   }
 
-  private Page<BookDto> returnBooksByCategoriesAndStatuses(Pageable pageable, List<String> bookStatuses, List<String> bookCategories){
+  private Page<BookDto> returnBooksByCategoriesAndStatuses(Pageable pageable,
+      List<String> bookStatuses, List<String> bookCategories) {
     List<BookCategoryDto> categories = convertStringsToBookCategoriesDto(bookCategories);
     if (bookStatuses == null) {
       return bookRepository.findByBookCategoriesIn(pageable, categories);
     }
-      List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
-      return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statuses, categories);
+    List<BookStatusDto> statuses = convertStringsToBookStatusesDto(bookStatuses);
+    return bookRepository.findByBookStatusInAndBookCategoriesIn(pageable, statuses, categories);
   }
 
   private List<BookCategoryDto> convertStringsToBookCategoriesDto(List<String> bookCategories) {
@@ -88,6 +95,21 @@ public class BookService {
         }).toList();
   }
 
-
+  public ImageWithMediaTypeDto getBookImageById(String id) {
+    BookDto bookDto = bookMapper.bookToBookDto(
+        bookRepository.findById(id).orElseThrow(
+            () -> new BookNotFoundException("Book with ID " + id + " was not found.")));
+    try {
+      Path path = Paths.get(bookDto.getImageUrl());
+      byte[] fileBytes = Files.readAllBytes(path);
+      String mediaTypeString = Files.probeContentType(path);
+      MediaType mediaType = MediaType.valueOf(mediaTypeString);
+      return new ImageWithMediaTypeDto(fileBytes, mediaType);
+    } catch (IOException e) {
+      throw new BookNotFoundException(
+          "Image for book with ID " + bookDto.getId() + " could not be found or read."
+      );
+    }
+  }
 }
 

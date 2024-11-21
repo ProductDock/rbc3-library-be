@@ -8,6 +8,10 @@ import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.enums.BookCategory;
 import com.library.rbc.model.enums.BookStatus;
 import com.library.rbc.model.enums.BookType;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class BookSetUp {
@@ -99,5 +103,13 @@ public class BookSetUp {
         .usersWhoReserved(USERS_WHO_RESERVED)
         .bookCategories(BOOK_CATEGORIES_DTO)
         .build();
+  }
+
+  static Path createFile() throws IOException {
+    Path imagePath = Paths.get("src/test/resources/image.jpg");
+    Files.createDirectories(imagePath.getParent());
+    Files.write(imagePath,
+        "dummy image content".getBytes());
+    return imagePath;
   }
 }
