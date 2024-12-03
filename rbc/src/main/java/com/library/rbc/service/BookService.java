@@ -44,8 +44,8 @@ public class BookService {
 
   public BookDto addNewBook(BookDto bookDTO) {
     Book savedBook = bookMapper.bookDtoToBook(bookDTO);
-    bookRepository.save(savedBook);
-    return bookDTO;
+    savedBook = bookRepository.save(savedBook);
+    return bookMapper.bookToBookDto(savedBook);
   }
 
   public Page<BookDto> getBooksBy(Pageable pageable, List<String> bookCategories,
@@ -94,7 +94,8 @@ public class BookService {
     }).toList();
   }
 
-  public String uploadImage(MultipartFile image) {
+  public String uploadImage(MultipartFile image, String id) {
+    BookDto bookDto = getBook(id);
     String homeDirectory = System.getProperty("user.home");
     Path uploadPath = Paths.get(homeDirectory, "Documents", "images");
     if (image.getContentType() == null || !image.getContentType().contains("image")) {
@@ -111,6 +112,10 @@ public class BookService {
       try (InputStream inputStream = image.getInputStream()) {
         Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
       }
+      String path = filePath.toString();
+      bookDto.setImageUrl(path);
+      Book book = bookMapper.bookDtoToBook(bookDto);
+      bookRepository.save(book);
       return filePath.toString();
     } catch (IOException e) {
       throw new ImageUploadException("Failed uploading image");

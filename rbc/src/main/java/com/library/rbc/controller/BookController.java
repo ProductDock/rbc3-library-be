@@ -53,9 +53,9 @@ public class BookController {
     return bookService.getBooksBy(pageable, bookCategories, bookStatuses);
   }
 
-  @PostMapping("/upload-image")
-  public ImageDto uploadImage(@RequestPart MultipartFile image) {
-    String result = bookService.uploadImage(image);
+  @PostMapping("/upload-image/{bookId}")
+  public ImageDto uploadImage(@RequestPart MultipartFile image, @PathVariable String bookId) {
+    String result = bookService.uploadImage(image, bookId);
     return new ImageDto(result);
   }
 }
