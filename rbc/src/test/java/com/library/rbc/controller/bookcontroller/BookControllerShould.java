@@ -8,13 +8,16 @@ import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.PAGE
 import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.createBookDto;
 import static com.library.rbc.controller.bookcontroller.BookControllerSetUp.createBookDtos;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.library.rbc.controller.BookController;
 import com.library.rbc.exceptionhandler.BookNotFoundException;
 import com.library.rbc.model.dto.BookDto;
+import com.library.rbc.model.dto.ImageDto;
 import com.library.rbc.service.BookService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 public class BookControllerShould {
@@ -93,4 +97,18 @@ public class BookControllerShould {
 
     assertEquals(expected, result);
   }
+
+
+  @Test
+  void uploadImage() {
+    MultipartFile mockImage = mock(MultipartFile.class);
+    String imagePath = "path/to/image.jpg";
+
+    when(bookService.uploadImage(mockImage, BOOK_ID)).thenReturn(imagePath);
+    ImageDto response = bookController.uploadImage(mockImage, BOOK_ID);
+
+    assertNotNull(response);
+    assertEquals(imagePath, response.getImagePath());
+  }
+
 }
