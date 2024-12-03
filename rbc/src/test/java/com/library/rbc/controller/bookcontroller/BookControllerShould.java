@@ -98,13 +98,14 @@ public class BookControllerShould {
     assertEquals(expected, result);
   }
 
+
   @Test
   void uploadImage() {
     MultipartFile mockImage = mock(MultipartFile.class);
     String imagePath = "path/to/image.jpg";
 
-    when(bookService.uploadImage(mockImage)).thenReturn(imagePath);
-    ImageDto response = bookController.uploadImage(mockImage);
+    when(bookService.uploadImage(mockImage, BOOK_ID)).thenReturn(imagePath);
+    ImageDto response = bookController.uploadImage(mockImage, BOOK_ID);
 
     assertNotNull(response);
     assertEquals(imagePath, response.getImagePath());

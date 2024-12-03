@@ -104,6 +104,8 @@ public class BookServiceShould {
 
     when(bookMapper.bookDtoToBook(expected)).thenReturn(book);
     when(bookRepository.save(book)).thenReturn(book);
+    when(bookMapper.bookToBookDto(book)).thenReturn(expected);
+
     BookDto actual = bookService.addNewBook(expected);
 
     assertEquals(expected, actual);
@@ -200,38 +202,56 @@ public class BookServiceShould {
 
   @Test
   void throwContentTypeException() {
+    Book book = createBook();
+    BookDto bookDto = createBookDto();
     MultipartFile mockFile = new MockMultipartFile("file", "test-file.txt", "text/plain",
         (byte[]) null);
+
+    when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+    when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
+
     ContentTypeException exception = assertThrows(ContentTypeException.class, () -> {
-      bookService.uploadImage(mockFile);
+      bookService.uploadImage(mockFile, BOOK_ID);
     });
     assertEquals("Provided file must be image", exception.getMessage());
   }
 
-
   @Test
   void throwIOExceptionOnUploadImage() throws IOException {
+    Book book = createBook();
+    BookDto bookDto = createBookDto();
+
+    when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+    when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
     when(mockImage.getContentType()).thenReturn("image/jpeg");
     when(mockImage.getInputStream()).thenThrow(new IOException("Failed to get input stream"));
-
     when(mockImage.getOriginalFilename()).thenReturn("testImage.jpeg");
+
     ImageUploadException exception = assertThrows(ImageUploadException.class, () -> {
-      bookService.uploadImage(mockImage);
+      bookService.uploadImage(mockImage, BOOK_ID);
     });
+    
     assertEquals("Failed uploading image", exception.getMessage());
   }
 
+
   @Test
   void uploadImage() {
+    Book book = createBook();
+    BookDto bookDto = createBookDto();
     MultipartFile mockFile = new MockMultipartFile("file", "test-image.jpg", "image/jpeg",
         (byte[]) null);
 
-    String actual = bookService.uploadImage(mockFile);
+    when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+    when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
+
+    String actual = bookService.uploadImage(mockFile, BOOK_ID);
     String expectedRegex = ".*Documents/images/[a-f0-9-]+\\.jpg";
 
     assertNotNull(actual);
     assertTrue(actual.matches(expectedRegex));
   }
+
 }
 
 

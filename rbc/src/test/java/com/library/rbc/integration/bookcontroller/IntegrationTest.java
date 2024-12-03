@@ -129,13 +129,14 @@ public class IntegrationTest {
 
   @Test
   public void shouldUploadImage() {
+    Book book1 = BookSetUp.createBook1();
+    bookRepository.save(book1);
     byte[] imageBytes = "dummy image content".getBytes();
-
     MultipartBodyBuilder builder = new MultipartBodyBuilder();
     builder.part("image", imageBytes).contentType(MediaType.IMAGE_JPEG).filename("test-image.jpg");
 
     webClient.post()
-        .uri("/books/upload-image")
+        .uri("/books/upload-image/{bookId}", BookSetUp.BOOK_ID)
         .bodyValue(builder.build())
         .exchange()
         .expectStatus().isOk()
@@ -146,13 +147,15 @@ public class IntegrationTest {
 
   @Test
   public void shouldCatchContentTypeExceptionWhenNoContentType() {
+    Book book1 = BookSetUp.createBook1();
+    bookRepository.save(book1);
     byte[] imageBytes = "dummy image content".getBytes();
 
     MultipartBodyBuilder builder = new MultipartBodyBuilder();
     builder.part("image", imageBytes).filename("test-image.jpg");
 
     webClient.post()
-        .uri("/books/upload-image")
+        .uri("/books/upload-image/{bookId}", BookSetUp.BOOK_ID)
         .bodyValue(builder.build())
         .exchange()
         .expectStatus().isBadRequest()
@@ -163,13 +166,15 @@ public class IntegrationTest {
 
   @Test
   public void shouldCatchContentTypeExceptionWhenContentTypeNotImage() {
+    Book book1 = BookSetUp.createBook1();
+    bookRepository.save(book1);
     byte[] imageBytes = "dummy image content".getBytes();
 
     MultipartBodyBuilder builder = new MultipartBodyBuilder();
     builder.part("image", imageBytes).contentType(MediaType.TEXT_HTML).filename("test-image.jpg");
 
     webClient.post()
-        .uri("/books/upload-image")
+        .uri("/books/upload-image/{bookId}", BookSetUp.BOOK_ID)
         .bodyValue(builder.build())
         .exchange()
         .expectStatus().isBadRequest()
