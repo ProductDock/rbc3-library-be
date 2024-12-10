@@ -208,8 +208,6 @@ public class BookServiceShould {
         (byte[]) null);
 
     when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
-    when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
-
     ContentTypeException exception = assertThrows(ContentTypeException.class, () -> {
       bookService.uploadImage(mockFile, BOOK_ID);
     });
@@ -219,10 +217,8 @@ public class BookServiceShould {
   @Test
   void throwIOExceptionOnUploadImage() throws IOException {
     Book book = createBook();
-    BookDto bookDto = createBookDto();
 
     when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
-    when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
     when(mockImage.getContentType()).thenReturn("image/jpeg");
     when(mockImage.getInputStream()).thenThrow(new IOException("Failed to get input stream"));
     when(mockImage.getOriginalFilename()).thenReturn("testImage.jpeg");
@@ -238,12 +234,10 @@ public class BookServiceShould {
   @Test
   void uploadImage() {
     Book book = createBook();
-    BookDto bookDto = createBookDto();
     MultipartFile mockFile = new MockMultipartFile("file", "test-image.jpg", "image/jpeg",
         (byte[]) null);
 
     when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
-    when(bookMapper.bookToBookDto(book)).thenReturn(bookDto);
 
     String actual = bookService.uploadImage(mockFile, BOOK_ID);
     String expectedRegex = ".*Documents/images/[a-f0-9-]+\\.jpg";
