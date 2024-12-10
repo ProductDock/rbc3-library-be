@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -95,7 +96,7 @@ public class BookService {
   }
 
   public String uploadImage(MultipartFile image, String id) {
-    BookDto bookDto = getBook(id);
+    Optional<Book> optionalBook = bookRepository.findById(id);
     String homeDirectory = System.getProperty("user.home");
     Path uploadPath = Paths.get(homeDirectory, "Documents", "images");
     if (image.getContentType() == null || !image.getContentType().contains("image")) {
@@ -113,9 +114,15 @@ public class BookService {
         Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
       }
       String path = filePath.toString();
-      bookDto.setImageUrl(path);
-      Book book = bookMapper.bookDtoToBook(bookDto);
-      bookRepository.save(book);
+      optionalBook.ifPresentOrElse(
+          book -> {
+            book.setImageUrl(path);
+            bookRepository.save(book);
+          },
+          () -> {
+            throw new BookNotFoundException("Book with id " + id + " not found");
+          }
+      );
       return filePath.toString();
     } catch (IOException e) {
       throw new ImageUploadException("Failed uploading image");
