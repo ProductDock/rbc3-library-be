@@ -6,6 +6,7 @@ import com.library.rbc.model.dto.AuthorDto;
 import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookStatusDto;
+import com.library.rbc.model.dto.ImageWithMediaTypeDto;
 import com.library.rbc.model.enums.BookCategory;
 import com.library.rbc.model.enums.BookStatus;
 import com.library.rbc.model.enums.BookType;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 
 public class BookServiceSetUp {
 
@@ -101,5 +103,12 @@ public class BookServiceSetUp {
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
     return new PageImpl<>(books, pageable, books.size());
+  }
+
+  static ImageWithMediaTypeDto createImageWithMediaTypeDto() {
+    return new ImageWithMediaTypeDto(
+        new byte[]{},
+        MediaType.IMAGE_JPEG
+    );
   }
 }

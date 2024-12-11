@@ -4,7 +4,6 @@ db.createCollection('books');
 
 db.books.insertMany([
   {
-    "id": "book1",
     "title": "MongoDB: The Definitive Guide: Powerful and Scalable Data Storage",
     "description": "This is a test description for the book.",
     "authors": [
@@ -13,7 +12,7 @@ db.books.insertMany([
         "fullName": "Kristina Chodorow"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover1.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 3,
     "bookStatus": "AVAILABLE",
@@ -25,7 +24,6 @@ db.books.insertMany([
     "bookCategories": ["MARKETING"]
   },
   {
-    "id": "book2",
     "title": "Software Engineering at Google: Lessons Learned from Programming Over Time",
     "description": "This is a test description for the book.",
     "authors": [
@@ -34,7 +32,7 @@ db.books.insertMany([
         "fullName": "Titus Winters"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover2.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 1,
     "bookStatus": "AVAILABLE",
@@ -46,7 +44,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT", "PRODUCT_MANAGEMENT"]
   },
   {
-    "id": "book3",
     "title": "Database Internals: A Deep Dive into How Distributed Data Systems Work",
     "description": "This is a test description for the book.",
     "authors": [
@@ -55,7 +52,7 @@ db.books.insertMany([
         "fullName": "Alex Petrov"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover3.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 5,
     "bookStatus": "AVAILABLE",
@@ -67,7 +64,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT", "PRODUCT_MANAGEMENT", "PSYCHOLOGY"]
   },
   {
-    "id": "book4",
     "title": "Restful web services cookbook",
     "description": "This is a test description for the book.",
     "authors": [
@@ -76,7 +72,7 @@ db.books.insertMany([
         "fullName": "Subbu Allamaraju"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover4.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 2,
     "bookStatus": "AVAILABLE",
@@ -88,7 +84,6 @@ db.books.insertMany([
     "bookCategories": ["DESIGN", "PSYCHOLOGY"]
   },
   {
-    "id": "book5",
     "title": "Customer Success: How Innovative Companies Are Reducing Churn and Growing Recurring Revenue",
     "description": "This is a test description for the book.",
     "authors": [
@@ -97,7 +92,7 @@ db.books.insertMany([
         "fullName": "Nick Mehta"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover5.svg",
     "totalNumberOfCopies": 3,
     "numberOfAvailableCopies": 0,
     "bookStatus": "RENTED",
@@ -109,7 +104,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book6",
     "title": "Site reliability engineering",
     "description": "This is a test description for the book.",
     "authors": [
@@ -118,7 +112,7 @@ db.books.insertMany([
         "fullName": "Betsy Beyer"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover6.svg",
     "totalNumberOfCopies": 1,
     "numberOfAvailableCopies": 0,
     "bookStatus": "RENTED",
@@ -130,7 +124,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book7",
     "title": "Docker: up and running",
     "description": "This is a test description for the book.",
     "authors": [
@@ -139,7 +132,7 @@ db.books.insertMany([
         "fullName": "Karl Matthias"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover7.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 3,
     "bookStatus": "AVAILABLE",
@@ -151,7 +144,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book8",
     "title": "Time to think: Listening to Ignite the human mind",
     "description": "This is a test description for the book.",
     "authors": [
@@ -160,7 +152,7 @@ db.books.insertMany([
         "fullName": "Nancy Kline"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover8.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 3,
     "bookStatus": "AVAILABLE",
@@ -172,7 +164,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book9",
     "title": "Impact Mapping: Making a Big Impact with Software Products and Projects",
     "description": "This is a test description for the book.",
     "authors": [
@@ -181,7 +172,7 @@ db.books.insertMany([
         "fullName": "Gojko Adzic"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover9.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 3,
     "bookStatus": "AVAILABLE",
@@ -193,7 +184,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book10",
     "title": "Continuous Discovery Habits: Discover Products that Create Customer Value and Business Value ",
     "description": "This is a test description for the book.",
     "authors": [
@@ -202,7 +192,7 @@ db.books.insertMany([
         "fullName": "Teresa Torres"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover10.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 3,
     "bookStatus": "AVAILABLE",
@@ -214,7 +204,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book11",
     "title": "The Principles of Product Development Flow: Second Generation Lean Product Development",
     "description": "This is a test description for the book.",
     "authors": [
@@ -223,7 +212,7 @@ db.books.insertMany([
         "fullName": "Donald G. Reinertsen"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover11.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 3,
     "bookStatus": "AVAILABLE",
@@ -235,7 +224,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book12",
     "title": "The Coaching Habit: Say Less, Ask More & Change the Way You Lead",
     "description": "This is a test description for the book.",
     "authors": [
@@ -244,7 +232,7 @@ db.books.insertMany([
         "fullName": "Michael Bungay Stanier"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover12.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 3,
     "bookStatus": "AVAILABLE",
@@ -256,7 +244,6 @@ db.books.insertMany([
     "bookCategories": ["SOFTWARE_DEVELOPMENT"]
   },
   {
-    "id": "book13",
     "title": "Mindwise: Why We Misunderstand What Others Think, Believe, Feel, and Want",
     "description": "This is a test description for the book.",
     "authors": [
@@ -265,7 +252,7 @@ db.books.insertMany([
         "fullName": "Nicholas Epley"
       }
     ],
-    "imageUrl": "image",
+    "imageUrl": "/Users/pd/Documents/images/BookCover13.svg",
     "totalNumberOfCopies": 5,
     "numberOfAvailableCopies": 0,
     "bookStatus": "RESERVED",
