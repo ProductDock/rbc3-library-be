@@ -1,6 +1,7 @@
 package com.library.rbc.controller;
 
 import com.library.rbc.model.dto.BookDto;
+import com.library.rbc.model.dto.ImageDto;
 import com.library.rbc.model.dto.ImageWithMediaTypeDto;
 import com.library.rbc.service.BookService;
 import java.util.List;

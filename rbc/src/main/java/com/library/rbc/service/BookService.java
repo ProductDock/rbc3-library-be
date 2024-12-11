@@ -97,12 +97,6 @@ public class BookService {
     }).toList();
   }
 
-  private String getFileExtension(String filename) {
-    int dotIndex = filename.lastIndexOf('.');
-    return (dotIndex >= 0) ? filename.substring(dotIndex) : "";
-  }
-
-
   public String uploadImage(MultipartFile image, String id) {
     Optional<Book> optionalBook = bookRepository.findById(id);
     String homeDirectory = System.getProperty("user.home");
@@ -136,6 +130,12 @@ public class BookService {
       throw new ImageUploadException("Failed uploading image");
     }
   }
+
+  private String getFileExtension(String filename) {
+    int dotIndex = filename.lastIndexOf('.');
+    return (dotIndex >= 0) ? filename.substring(dotIndex) : "";
+  }
+  
   public ImageWithMediaTypeDto getBookImageById(String id) {
     BookDto bookDto = bookMapper.bookToBookDto(
         bookRepository.findById(id).orElseThrow(
