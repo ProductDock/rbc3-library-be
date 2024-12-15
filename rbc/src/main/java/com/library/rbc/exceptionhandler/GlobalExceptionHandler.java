@@ -39,5 +39,11 @@ public class GlobalExceptionHandler {
     return new ErrorResponse(ex.getMessage());
   }
 
+  @ExceptionHandler(value = EmailAlreadyExistsException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public @ResponseBody ErrorResponse handleException(EmailAlreadyExistsException ex) {
+    return new ErrorResponse(ex.getMessage());
+  }
+
 }
 
