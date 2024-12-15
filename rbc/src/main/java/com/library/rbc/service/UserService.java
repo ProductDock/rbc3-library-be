@@ -1,11 +1,13 @@
 package com.library.rbc.service;
 
 import com.library.rbc.exceptionhandler.EmailAlreadyExistsException;
+import com.library.rbc.exceptionhandler.UserNotFoundException;
 import com.library.rbc.model.User;
 import com.library.rbc.model.dto.UserDto;
 import com.library.rbc.model.dto.UserMapper;
 import com.library.rbc.model.enums.Role;
 import com.library.rbc.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,20 @@ public class UserService {
     User newUser = userMapper.userDtoToUser(userDto);
     User savedUser = userRepository.save(newUser);
     return userMapper.userToUserDto(savedUser);
+  }
+
+  public Optional<User> updateRole(String id) {
+    Optional<User> optionalUser = userRepository.findById(id);
+    optionalUser.ifPresentOrElse(
+        user -> {
+          user.setRole(Role.ADMIN);
+          userRepository.save(user);
+        },
+        () -> {
+          throw new UserNotFoundException("User with id " + id + " not found");
+        }
+    );
+    return optionalUser;
   }
 
 }
