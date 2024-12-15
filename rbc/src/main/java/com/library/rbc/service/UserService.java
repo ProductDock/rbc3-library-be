@@ -9,6 +9,8 @@ import com.library.rbc.model.enums.Role;
 import com.library.rbc.repository.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,10 @@ public class UserService {
   private final UserRepository userRepository;
   private final UserMapper userMapper;
 
+
+  public Page<UserDto> getAllUsers(Pageable pageable) {
+    return userRepository.findAll(pageable).map(userMapper::userToUserDto);
+  }
 
   public UserDto saveUser(UserDto userDto) {
     UserDto existingUser = userRepository.findByEmail(userDto.getEmail());
