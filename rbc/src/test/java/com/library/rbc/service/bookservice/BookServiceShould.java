@@ -34,7 +34,6 @@ import com.library.rbc.service.BookService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -46,9 +45,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.MediaType;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceShould {
@@ -251,7 +250,6 @@ public class BookServiceShould {
   @Test
   void testGetBookImageById_ImageNotFound() {
     when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(createBook()));
-    when(bookMapper.bookToBookDto(any(Book.class))).thenReturn(createBookDto());
     MockedStatic<Files> mockFiles = mockStatic(Files.class);
     mockFiles.when(() -> Files.readAllBytes(any(Path.class))).thenThrow(new IOException());
 
@@ -266,12 +264,10 @@ public class BookServiceShould {
   void getBookImageById() {
     ImageWithMediaTypeDto expected = createImageWithMediaTypeDto();
     Book book = createBook();
-    BookDto bookDto = createBookDto();
     MockedStatic<MediaType> mockMediaType = mockStatic(MediaType.class);
     MockedStatic<Files> mockFiles = mockStatic(Files.class);
 
     when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
-    when(bookMapper.bookToBookDto(any(Book.class))).thenReturn(bookDto);
 
     mockFiles.when(() -> Files.readAllBytes(any(Path.class))).thenReturn(new byte[]{});
     mockFiles.when(() -> Files.probeContentType(any(Path.class)))

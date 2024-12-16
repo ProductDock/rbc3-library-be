@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -196,7 +195,7 @@ public class IntegrationTest {
     byte[] imageBytes = Files.readAllBytes(imagePath);
 
     webClient.get()
-        .uri("/books/photo/{bookId}", book.getId())
+        .uri("/books/{bookId}/image", book.getId())
         .exchange()
         .expectStatus().isOk()
         .expectHeader().contentType(mediaType)
@@ -212,7 +211,7 @@ public class IntegrationTest {
     book.setImageUrl("src/test/resources/image.jpg");
 
     webClient.get()
-        .uri("/books/photo/{bookId}", book.getId())
+        .uri("/books/{bookId}/image", book.getId())
         .exchange()
         .expectStatus().isNotFound()
         .expectBody()

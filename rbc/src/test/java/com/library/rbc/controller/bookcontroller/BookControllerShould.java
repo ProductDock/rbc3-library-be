@@ -30,9 +30,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 public class BookControllerShould {
@@ -127,7 +127,6 @@ public class BookControllerShould {
     ResponseEntity<byte[]> response = bookController.returnPhotoBy(BOOK_ID);
 
     assertArrayEquals(imageBytes, response.getBody());
-
   }
 
 }
