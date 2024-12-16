@@ -60,7 +60,7 @@ public class BookController {
     return new ImageDto(result);
   }
 
-  @GetMapping("/photo/{bookId}")
+  @GetMapping("/{bookId}/image")
   public ResponseEntity<byte[]> returnPhotoBy(@PathVariable String bookId) {
     ImageWithMediaTypeDto imageWithMediaTypeDto = bookService.getBookImageById(bookId);
     return ResponseEntity.ok()

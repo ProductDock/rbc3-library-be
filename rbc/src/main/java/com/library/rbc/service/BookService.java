@@ -137,18 +137,17 @@ public class BookService {
   }
   
   public ImageWithMediaTypeDto getBookImageById(String id) {
-    BookDto bookDto = bookMapper.bookToBookDto(
-        bookRepository.findById(id).orElseThrow(
-            () -> new BookNotFoundException("Book with ID " + id + " was not found.")));
+    Book book = bookRepository.findById(id)
+        .orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " was not found."));
     try {
-      Path path = Paths.get(bookDto.getImageUrl());
+      Path path = Paths.get(book.getImageUrl());
       byte[] fileBytes = Files.readAllBytes(path);
       String mediaTypeString = Files.probeContentType(path);
       MediaType mediaType = MediaType.valueOf(mediaTypeString);
       return new ImageWithMediaTypeDto(fileBytes, mediaType);
     } catch (IOException e) {
       throw new BookNotFoundException(
-          "Image for book with ID " + bookDto.getId() + " could not be found or read."
+          "Image for book with ID " + book.getId() + " could not be found or read."
       );
     }
   }
