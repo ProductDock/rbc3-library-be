@@ -10,6 +10,7 @@ import com.library.rbc.model.dto.BookCategoryDto;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.BookMapper;
 import com.library.rbc.model.dto.BookStatusDto;
+import com.library.rbc.model.dto.ImageWithMediaTypeDto;
 import com.library.rbc.repository.BookRepository;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +25,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -133,4 +135,21 @@ public class BookService {
     int dotIndex = filename.lastIndexOf('.');
     return (dotIndex >= 0) ? filename.substring(dotIndex) : "";
   }
+  
+  public ImageWithMediaTypeDto getBookImageById(String id) {
+    Book book = bookRepository.findById(id)
+        .orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " was not found."));
+    try {
+      Path path = Paths.get(book.getImageUrl());
+      byte[] fileBytes = Files.readAllBytes(path);
+      String mediaTypeString = Files.probeContentType(path);
+      MediaType mediaType = MediaType.valueOf(mediaTypeString);
+      return new ImageWithMediaTypeDto(fileBytes, mediaType);
+    } catch (IOException e) {
+      throw new BookNotFoundException(
+          "Image for book with ID " + book.getId() + " could not be found or read."
+      );
+    }
+  }
 }
+

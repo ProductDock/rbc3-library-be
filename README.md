@@ -35,6 +35,15 @@ To run the application using Docker, you can do so with the following command:
 docker-compose up -d
 ```
 
+There is an initialization script (mongo-init.js) that automatically populates the MongoDB database
+with necessary data. It requires images (book cover images) to be available locally for the
+application to fetch and display books correctly.
+
+Each book in the database has an imageUrl that specifies the path to its cover image, and these
+images need to be stored in the corresponding location on your machine.
+Make sure you have the necessary image files stored in the corresponding directory. If you don’t
+have the images, you may need to update the paths accordingly.
+
 #### Using Maven
 
 Run the application with the following command:
