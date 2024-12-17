@@ -2,6 +2,7 @@ package com.library.rbc.controller;
 
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.model.dto.ImageDto;
+import com.library.rbc.model.dto.ImageWithMediaTypeDto;
 import com.library.rbc.service.BookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +58,13 @@ public class BookController {
   public ImageDto uploadImage(@RequestPart MultipartFile image, @PathVariable String bookId) {
     String result = bookService.uploadImage(image, bookId);
     return new ImageDto(result);
+  }
+
+  @GetMapping("/{bookId}/image")
+  public ResponseEntity<byte[]> returnPhotoBy(@PathVariable String bookId) {
+    ImageWithMediaTypeDto imageWithMediaTypeDto = bookService.getBookImageById(bookId);
+    return ResponseEntity.ok()
+        .contentType(imageWithMediaTypeDto.getMediaType())
+        .body(imageWithMediaTypeDto.getInputStreamResource());
   }
 }

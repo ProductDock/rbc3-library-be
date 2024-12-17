@@ -6,6 +6,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import com.library.rbc.model.Book;
 import com.library.rbc.model.dto.BookDto;
 import com.library.rbc.repository.BookRepository;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,4 +183,39 @@ public class IntegrationTest {
         .expectBody()
         .jsonPath("$.message").isEqualTo("Provided file must be image");
   }
+
+  @Test
+  public void shouldReturnBookImage() throws Exception {
+    Book book = BookSetUp.createBook1();
+    book.setImageUrl("src/test/resources/image.jpg");
+    MediaType mediaType = MediaType.IMAGE_JPEG;
+    bookRepository.save(book);
+
+    Path imagePath = BookSetUp.createFile();
+    byte[] imageBytes = Files.readAllBytes(imagePath);
+
+    webClient.get()
+        .uri("/books/{bookId}/image", book.getId())
+        .exchange()
+        .expectStatus().isOk()
+        .expectHeader().contentType(mediaType)
+        .expectBody(byte[].class)
+        .isEqualTo(imageBytes);
+
+    Files.delete(imagePath);
+  }
+
+  @Test
+  public void shouldCatchBookWithIdNotFound() {
+    Book book = BookSetUp.createBook1();
+    book.setImageUrl("src/test/resources/image.jpg");
+
+    webClient.get()
+        .uri("/books/{bookId}/image", book.getId())
+        .exchange()
+        .expectStatus().isNotFound()
+        .expectBody()
+        .jsonPath("$.message").isEqualTo("Book with ID " + book.getId() + " was not found.");
+  }
+
 }
