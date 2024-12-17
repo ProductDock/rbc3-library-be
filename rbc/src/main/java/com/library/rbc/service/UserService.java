@@ -3,6 +3,7 @@ package com.library.rbc.service;
 import com.library.rbc.exceptionhandler.EmailAlreadyExistsException;
 import com.library.rbc.exceptionhandler.UserNotFoundException;
 import com.library.rbc.model.User;
+import com.library.rbc.model.dto.RoleDto;
 import com.library.rbc.model.dto.UserDto;
 import com.library.rbc.model.dto.UserMapper;
 import com.library.rbc.model.enums.Role;
@@ -31,7 +32,7 @@ public class UserService {
       throw new EmailAlreadyExistsException(
           "User with this email already exists: " + userDto.getEmail());
     }
-    userDto.setRole(Role.EMPLOYEE);
+    userDto.setRole(RoleDto.EMPLOYEE);
     User newUser = userMapper.userDtoToUser(userDto);
     User savedUser = userRepository.save(newUser);
     return userMapper.userToUserDto(savedUser);
