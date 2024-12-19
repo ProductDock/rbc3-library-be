@@ -2,11 +2,20 @@ package com.library.rbc.controller.usercontroller;
 
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.PAGE_NUMBER;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.PAGE_SIZE;
+import static com.library.rbc.controller.usercontroller.UserControllerSetUp.USER_EMAIL;
+import static com.library.rbc.controller.usercontroller.UserControllerSetUp.USER_ID;
+import static com.library.rbc.controller.usercontroller.UserControllerSetUp.createUser2;
+import static com.library.rbc.controller.usercontroller.UserControllerSetUp.createUserDto;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.createUserDtos;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import com.library.rbc.controller.UserController;
+import com.library.rbc.exceptionhandler.EmailAlreadyExistsException;
+import com.library.rbc.exceptionhandler.UserNotFoundException;
+import com.library.rbc.model.User;
 import com.library.rbc.model.dto.UserDto;
 import com.library.rbc.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -29,15 +38,68 @@ public class UserControllerShould {
 
   @Test
   void getAllUsers() {
-    Page<UserDto> userDtos = createUserDtos();
+    Page<UserDto> expected = createUserDtos();
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
-    when(userService.getAllUsers(pageable)).thenReturn(userDtos);
+    when(userService.getAllUsers(pageable)).thenReturn(expected);
 
-    Page<UserDto> result = userController.getAllUsers(pageable);
+    Page<UserDto> actual = userController.getAllUsers(pageable);
 
-    Page<UserDto> expected = createUserDtos();
-    assertEquals(userDtos, result);
+    assertEquals(expected, actual);
   }
+
+  @Test
+  void saveNewUser() {
+    UserDto expected = createUserDto();
+
+    when(userService.saveUser(expected)).thenReturn(expected);
+
+    UserDto actual = userController.saveUser(expected).getBody();
+
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void getResponseWhenUserWithSameEmailAlreadyExists() {
+    UserDto userDto = createUserDto();
+
+    when(userService.saveUser(userDto)).thenThrow(
+        new EmailAlreadyExistsException("User with this email already exists: " + USER_EMAIL));
+
+    EmailAlreadyExistsException exception = assertThrows(EmailAlreadyExistsException.class, () ->
+        userController.saveUser(userDto));
+
+    String expectedMessage = "User with this email already exists: " + USER_EMAIL;
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  void updateRole() {
+    User updatedUser = createUser2();
+
+    when(userService.updateRole(USER_ID)).thenReturn(updatedUser);
+
+    User actualUser = userController.updateRole(USER_ID);
+
+    assertEquals(updatedUser.getRole(), actualUser.getRole());
+  }
+
+  @Test
+  void getResponseWhenNoUserIsFound() {
+    when(userService.updateRole(USER_ID)).thenThrow(
+        new UserNotFoundException("User with id " + USER_ID + " not found"));
+
+    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
+      userService.updateRole(USER_ID);
+    });
+
+    String expectedMessage = "User with id " + USER_ID + " not found";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
 
 }

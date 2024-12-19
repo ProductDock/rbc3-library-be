@@ -1,7 +1,9 @@
 package com.library.rbc.controller.usercontroller;
 
+import com.library.rbc.model.User;
 import com.library.rbc.model.dto.RoleDto;
 import com.library.rbc.model.dto.UserDto;
+import com.library.rbc.model.enums.Role;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,7 +17,6 @@ public class UserControllerSetUp {
   static final String USER_GOOGLE_ID = "2";
   static final String USER_EMAIL = "email";
   static final String USER_IMAGE_URL = "image";
-  static final String USER_ROLE = "EMPLOYEE";
 
   static final int PAGE_NUMBER = 0;
   static final int PAGE_SIZE = 10;
@@ -29,6 +30,23 @@ public class UserControllerSetUp {
         .imageUrl(USER_IMAGE_URL)
         .role(RoleDto.EMPLOYEE)
         .build();
+  }
+
+  static User createUser() {
+    return User.builder()
+        .id(USER_ID)
+        .fullName(USER_FULL_NAME)
+        .googleID(USER_GOOGLE_ID)
+        .email(USER_EMAIL)
+        .imageUrl(USER_IMAGE_URL)
+        .role(Role.EMPLOYEE)
+        .build();
+  }
+
+  static User createUser2() {
+    User user2 = createUser();
+    user2.setRole(Role.ADMIN);
+    return user2;
   }
 
   static Page<UserDto> createUserDtos() {
