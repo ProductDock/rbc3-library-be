@@ -95,9 +95,9 @@ public class UserServiceShould {
     expected.setRole(Role.ADMIN);
     when(userRepository.save(expected)).thenReturn(expected);
 
-    Optional<User> actual = userService.updateRole(USER_ID);
+    User actual = userService.updateRole(USER_ID);
 
-    assertEquals(Optional.of(expected), actual);
+    assertEquals(expected, actual);
   }
 
   @Test

@@ -99,7 +99,7 @@ public class UserIntegrationTest {
     userRepository.save(user);
 
     webClient.patch()
-        .uri("/users/updateRole/{userId}", user.getId())
+        .uri("/users/{userId}/updateRole", user.getId())
         .exchange()
         .expectStatus().isOk()
         .expectBody()
@@ -112,7 +112,7 @@ public class UserIntegrationTest {
     User user = createUser();
 
     webClient.patch()
-        .uri("/users/updateRole/{userId}", user.getId())
+        .uri("/users/{userId}/updateRole", user.getId())
         .exchange()
         .expectStatus().isNotFound()
         .expectBody()
