@@ -18,6 +18,7 @@ public class User {
     @Id
     private String id;
     private String fullName;
+    private String googleID;
     private String email;
     private String imageUrl;
     private Role role;
