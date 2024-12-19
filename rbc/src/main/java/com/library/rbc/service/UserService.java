@@ -38,18 +38,12 @@ public class UserService {
     return userMapper.userToUserDto(savedUser);
   }
 
-  public Optional<User> updateRole(String id) {
+  public User updateRole(String id) {
     Optional<User> optionalUser = userRepository.findById(id);
-    optionalUser.ifPresentOrElse(
-        user -> {
-          user.setRole(Role.ADMIN);
-          userRepository.save(user);
-        },
-        () -> {
-          throw new UserNotFoundException("User with id " + id + " not found");
-        }
-    );
-    return optionalUser;
+    return optionalUser.map(user -> {
+      user.setRole(Role.ADMIN);
+      userRepository.save(user);
+      return user;
+    }).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
   }
-
 }

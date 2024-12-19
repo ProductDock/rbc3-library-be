@@ -4,7 +4,6 @@ package com.library.rbc.controller;
 import com.library.rbc.model.User;
 import com.library.rbc.model.dto.UserDto;
 import com.library.rbc.service.UserService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -27,20 +26,20 @@ public class UserController {
 
   private final UserService userService;
 
+  @GetMapping
+  public Page<UserDto> getAllUsers(
+      @ParameterObject @PageableDefault(size = 12) Pageable pageable) {
+    return userService.getAllUsers(pageable);
+  }
+
   @PostMapping("/login")
   public ResponseEntity<UserDto> saveUser(@RequestBody UserDto user) {
     UserDto result = userService.saveUser(user);
     return ResponseEntity.status(HttpStatus.CREATED).body(result);
   }
 
-  @PatchMapping("/updateRole/{userId}")
-  public Optional<User> updateRole(@PathVariable String userId) {
+  @PatchMapping("/{userId}/updateRole")
+  public User updateRole(@PathVariable String userId) {
     return userService.updateRole(userId);
-  }
-
-  @GetMapping
-  public Page<UserDto> getAllUsers(
-      @ParameterObject @PageableDefault(size = 12) Pageable pageable) {
-    return userService.getAllUsers(pageable);
   }
 }
