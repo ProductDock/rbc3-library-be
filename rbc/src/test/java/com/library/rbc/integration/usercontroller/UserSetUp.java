@@ -23,6 +23,7 @@ public class UserSetUp {
         .fullName(USER_FULL_NAME)
         .email(USER_EMAIL)
         .imageUrl(USER_IMAGE_URL)
+        .googleID(USER_GOOGLE_ID)
         .role(Role.EMPLOYEE)
         .build();
   }

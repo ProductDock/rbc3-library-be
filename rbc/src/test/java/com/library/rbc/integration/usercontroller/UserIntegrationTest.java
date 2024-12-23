@@ -118,4 +118,35 @@ public class UserIntegrationTest {
         .expectBody()
         .jsonPath("$.message").isEqualTo("User with id " + user.getId() + " not found");
   }
+
+  @Test
+  public void shouldGetUser() {
+    User user = createUser();
+
+    userRepository.save(user);
+
+    webClient.get()
+        .uri("/users/{googleID}", user.getGoogleID())
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .jsonPath("$.id").isEqualTo(USER_ID)
+        .jsonPath("$.fullName").isEqualTo(USER_FULL_NAME)
+        .jsonPath("$.email").isEqualTo(USER_EMAIL)
+        .jsonPath("$.imageUrl").isEqualTo(USER_IMAGE_URL)
+        .jsonPath("$.role").isEqualTo(USER_ROLE);
+  }
+
+  @Test
+  public void shouldCatchUserNotFoundExceptionWhenUserWithGoogleIDIsNotFound() {
+    UserDto user = createUserDto();
+
+    webClient.get()
+        .uri("/users/{googleID}", user.getGoogleID())
+        .exchange()
+        .expectStatus().isNotFound()
+        .expectBody()
+        .jsonPath("$.message").isEqualTo("User with provided google id does not exist");
+  }
+
 }

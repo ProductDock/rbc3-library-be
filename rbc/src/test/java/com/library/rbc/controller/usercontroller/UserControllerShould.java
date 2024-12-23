@@ -3,6 +3,7 @@ package com.library.rbc.controller.usercontroller;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.PAGE_NUMBER;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.PAGE_SIZE;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.USER_EMAIL;
+import static com.library.rbc.controller.usercontroller.UserControllerSetUp.USER_GOOGLE_ID;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.USER_ID;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.createUser2;
 import static com.library.rbc.controller.usercontroller.UserControllerSetUp.createUserDto;
@@ -92,7 +93,7 @@ public class UserControllerShould {
         new UserNotFoundException("User with id " + USER_ID + " not found"));
 
     UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
-      userService.updateRole(USER_ID);
+      userController.updateRole(USER_ID);
     });
 
     String expectedMessage = "User with id " + USER_ID + " not found";
@@ -101,5 +102,30 @@ public class UserControllerShould {
     assertTrue(actualMessage.contains(expectedMessage));
   }
 
+  @Test
+  void getUserByGoogleId() {
+    UserDto expected = createUserDto();
+
+    when(userService.getUser(USER_GOOGLE_ID)).thenReturn(expected);
+
+    UserDto actual = userController.getUser(USER_GOOGLE_ID);
+
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void getResponseWhenUserWithGoogleIdIsNotFound() {
+    when(userService.getUser(USER_GOOGLE_ID)).thenThrow(
+        new UserNotFoundException("User with provided google id does not exist"));
+
+    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
+      userController.getUser(USER_GOOGLE_ID);
+    });
+
+    String expectedMessage = "User with provided google id does not exist";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
 
 }

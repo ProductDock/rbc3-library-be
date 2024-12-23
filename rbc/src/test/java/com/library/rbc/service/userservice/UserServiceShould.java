@@ -3,6 +3,7 @@ package com.library.rbc.service.userservice;
 import static com.library.rbc.service.userservice.UserServiceSetUp.PAGE_NUMBER;
 import static com.library.rbc.service.userservice.UserServiceSetUp.PAGE_SIZE;
 import static com.library.rbc.service.userservice.UserServiceSetUp.USER_EMAIL;
+import static com.library.rbc.service.userservice.UserServiceSetUp.USER_GOOGLE_ID;
 import static com.library.rbc.service.userservice.UserServiceSetUp.USER_ID;
 import static com.library.rbc.service.userservice.UserServiceSetUp.createUser;
 import static com.library.rbc.service.userservice.UserServiceSetUp.createUserDto;
@@ -108,6 +109,31 @@ public class UserServiceShould {
     UserNotFoundException exception = assertThrows(UserNotFoundException.class, () ->
         userService.updateRole(USER_ID));
 
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  void getUserByGoogleId() {
+    UserDto expected = createUserDto();
+
+    when(userRepository.findByGoogleID(USER_GOOGLE_ID)).thenReturn(expected);
+
+    UserDto actual = userService.getUser(USER_GOOGLE_ID);
+
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void throwExceptionWhenUserWithGoogleIdWasNotFound() {
+    when(userRepository.findByGoogleID(USER_GOOGLE_ID)).thenReturn(null);
+
+    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
+      userService.getUser(USER_GOOGLE_ID);
+    });
+
+    String expectedMessage = "User with provided google id does not exist";
     String actualMessage = exception.getMessage();
 
     assertTrue(actualMessage.contains(expectedMessage));
