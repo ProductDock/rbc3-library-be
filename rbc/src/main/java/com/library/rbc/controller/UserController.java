@@ -42,4 +42,9 @@ public class UserController {
   public User updateRole(@PathVariable String userId) {
     return userService.updateRole(userId);
   }
+
+  @GetMapping("/{googleID}")
+  public UserDto getUser(@PathVariable String googleID) {
+    return userService.getUser(googleID);
+  }
 }

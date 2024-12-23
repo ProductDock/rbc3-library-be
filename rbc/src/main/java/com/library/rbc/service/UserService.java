@@ -46,4 +46,12 @@ public class UserService {
       return user;
     }).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
   }
+
+  public UserDto getUser(String googleID) {
+    UserDto user = userRepository.findByGoogleID(googleID);
+    if (user == null) {
+      throw new UserNotFoundException("User with provided google id does not exist");
+    }
+    return user;
+  }
 }
