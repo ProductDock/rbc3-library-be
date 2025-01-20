@@ -59,6 +59,34 @@ public class UserIntegrationTest {
         .jsonPath("$.content.size()").isEqualTo(2);
   }
 
+
+  @Test
+  public void shouldGetUserById() {
+    User user = UserSetUp.createUser();
+    userRepository.save(user);
+    webClient.get()
+        .uri(uriBuilder -> uriBuilder.path("/users/{id}/getUser")
+            .build(user.getId()))
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .jsonPath("$.id").isEqualTo(USER_ID)
+        .jsonPath("$.fullName").isEqualTo(USER_FULL_NAME)
+        .jsonPath("$.email").isEqualTo(USER_EMAIL)
+        .jsonPath("$.imageUrl").isEqualTo(USER_IMAGE_URL)
+        .jsonPath("$.role").isEqualTo(USER_ROLE);
+  }
+
+  @Test
+  public void shouldCatchUserWithIdNotFoundException() {
+    webClient.get()
+        .uri("/users/{id}/getUser", USER_ID)
+        .exchange()
+        .expectStatus().isNotFound()
+        .expectBody()
+        .jsonPath("$.message").isEqualTo("User with ID " + USER_ID + " was not found.");
+  }
+
   @Test
   public void shouldAddNewUser() {
     UserDto userDto = createUserDto();

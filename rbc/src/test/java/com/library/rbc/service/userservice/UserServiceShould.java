@@ -60,6 +60,18 @@ public class UserServiceShould {
   }
 
   @Test
+  void getUser() {
+    User user = createUser();
+    UserDto userDto = createUserDto();
+
+    when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
+    when(userMapper.userToUserDto(user)).thenReturn(userDto);
+    UserDto result = userService.getUserById(USER_ID);
+
+    assertEquals(userDto, result);
+  }
+
+  @Test
   void saveUser() {
     User user = createUser();
     UserDto expected = createUserDto();
@@ -72,6 +84,19 @@ public class UserServiceShould {
     UserDto actual = userService.saveUser(expected);
 
     assertEquals(expected, actual);
+  }
+
+  @Test
+  void throwUserWithIdNotFoundException() {
+    when(userRepository.findById(USER_ID)).thenReturn(Optional.empty());
+
+    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
+      userService.getUserById(USER_ID);
+    });
+
+    String expectedMessage = "User with ID " + USER_ID + " was not found.";
+    String actualMessage = exception.getMessage();
+    assertTrue(actualMessage.contains(expectedMessage));
   }
 
   @Test

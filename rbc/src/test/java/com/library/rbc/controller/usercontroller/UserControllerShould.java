@@ -50,6 +50,30 @@ public class UserControllerShould {
   }
 
   @Test
+  void getUserById() {
+    UserDto expected = createUserDto();
+
+    when(userService.getUserById(USER_ID)).thenReturn(expected);
+    UserDto actual = userController.getUserById(USER_ID);
+
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void getResponseWhenNoUserWithIdIsFound() {
+    when(userService.getUserById(USER_ID)).thenThrow(
+        new UserNotFoundException("User with ID " + USER_ID + " was not found."));
+
+    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
+      userController.getUserById(USER_ID);
+    });
+
+    String expectedMessage = "User with ID " + USER_ID + " was not found.";
+    String actualMessage = exception.getMessage();
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
   void saveNewUser() {
     UserDto expected = createUserDto();
 
