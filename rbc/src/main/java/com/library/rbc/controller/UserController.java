@@ -32,6 +32,11 @@ public class UserController {
     return userService.getAllUsers(pageable);
   }
 
+  @GetMapping("/{id}/getUser")
+  public UserDto getUserById(@PathVariable String id) {
+    return userService.getUserById(id);
+  }
+
   @PostMapping("/login")
   public ResponseEntity<UserDto> saveUser(@RequestBody UserDto user) {
     UserDto result = userService.saveUser(user);

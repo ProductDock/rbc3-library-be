@@ -26,6 +26,11 @@ public class UserService {
     return userRepository.findAll(pageable).map(userMapper::userToUserDto);
   }
 
+  public UserDto getUserById(String id) {
+    return userMapper.userToUserDto(userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " was not found.")));
+  }
+
   public UserDto saveUser(UserDto userDto) {
     UserDto existingUser = userRepository.findByEmail(userDto.getEmail());
     if (existingUser != null) {
